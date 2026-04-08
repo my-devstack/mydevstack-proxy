@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -262,7 +263,42 @@ func (h *ProxyHandler) listObjectsV2(ctx context.Context, c *gin.Context, bodyBy
 		sendError(c, http.StatusInternalServerError, "Failed to list objects", err)
 		return
 	}
-	c.JSON(http.StatusOK, result)
+
+	type objInfo struct {
+		Key          string
+		LastModified string
+		ETag         string
+		Size         int64
+		StorageClass string
+	}
+
+	type listObjectsV2Output struct {
+		IsTruncated           bool
+		NextContinuationToken *string
+		Contents              []objInfo
+		CommonPrefixes        []struct{ Prefix string }
+	}
+
+	output := listObjectsV2Output{
+		IsTruncated:           result.IsTruncated != nil && *result.IsTruncated,
+		NextContinuationToken: result.NextContinuationToken,
+	}
+
+	for _, obj := range result.Contents {
+		output.Contents = append(output.Contents, objInfo{
+			Key:          *obj.Key,
+			LastModified: obj.LastModified.UTC().Format("2006-01-02T15:04:05Z"),
+			ETag:         *obj.ETag,
+			Size:         *obj.Size,
+			StorageClass: string(obj.StorageClass),
+		})
+	}
+
+	for _, p := range result.CommonPrefixes {
+		output.CommonPrefixes = append(output.CommonPrefixes, struct{ Prefix string }{Prefix: *p.Prefix})
+	}
+
+	c.JSON(http.StatusOK, output)
 }
 
 func (h *ProxyHandler) getObject(ctx context.Context, c *gin.Context, bodyBytes []byte) {
@@ -279,12 +315,40 @@ func (h *ProxyHandler) getObject(ctx context.Context, c *gin.Context, bodyBytes 
 	c.JSON(http.StatusOK, result)
 }
 
+type PutObjectInputJSON struct {
+	Bucket      *string `json:"Bucket"`
+	Key         *string `json:"Key"`
+	Body        any     `json:"Body"`
+	ContentType *string `json:"ContentType"`
+}
+
 func (h *ProxyHandler) putObject(ctx context.Context, c *gin.Context, bodyBytes []byte) {
-	input := &s3.PutObjectInput{}
-	if err := parseBody(c, bodyBytes, input); err != nil {
+	var inputJSON PutObjectInputJSON
+	if err := json.Unmarshal(bodyBytes, &inputJSON); err != nil {
 		sendError(c, http.StatusBadRequest, "Invalid request body", err)
 		return
 	}
+
+	input := &s3.PutObjectInput{
+		Bucket:      inputJSON.Bucket,
+		Key:         inputJSON.Key,
+		ContentType: inputJSON.ContentType,
+	}
+
+	if inputJSON.Body != nil {
+		switch v := inputJSON.Body.(type) {
+		case string:
+			input.Body = strings.NewReader(v)
+		case []interface{}:
+			data := make([]byte, len(v))
+			for i, b := range v {
+				f, _ := b.(float64)
+				data[i] = byte(f)
+			}
+			input.Body = bytes.NewReader(data)
+		}
+	}
+
 	result, err := h.s3.PutObject(ctx, input)
 	if err != nil {
 		sendError(c, http.StatusInternalServerError, "Failed to put object", err)

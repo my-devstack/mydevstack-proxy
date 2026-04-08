@@ -1,4 +1,4 @@
-module github.com/beabys/mydevstack-server
+module github.com/my-devstack/mydevstack-server
 
 go 1.26.1
 
