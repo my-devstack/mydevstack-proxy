@@ -8,15 +8,12 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/my-devstack/mydevstack-proxy/bootstrap"
 	http2 "github.com/my-devstack/mydevstack-proxy/internal/adapters/http"
 	configloader "github.com/my-devstack/mydevstack-proxy/internal/config"
 )
 
 func main() {
-	_ = godotenv.Load()
-
 	cfg, err := loadConfig()
 	if err != nil {
 		log.Printf("Warning: Could not load config from files, using defaults: %v", err)

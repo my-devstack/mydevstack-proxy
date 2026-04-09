@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io"
+	"log"
 	"net/http"
 	"strings"
 
@@ -12,12 +14,7 @@ import (
 )
 
 func (h *ProxyHandler) handleS3(c *gin.Context) {
-	path := c.Param("path")
 	xAmzTarget := c.GetHeader("X-Amz-Target")
-
-	if strings.HasPrefix(path, "/") {
-		path = strings.TrimPrefix(path, "/")
-	}
 
 	bodyBytes := readBody(c)
 	ctx := context.Background()
@@ -115,7 +112,21 @@ func (h *ProxyHandler) getObject(ctx context.Context, c *gin.Context, bodyBytes 
 		sendError(c, http.StatusInternalServerError, "Failed to get object", err)
 		return
 	}
-	c.JSON(http.StatusOK, result)
+
+	data, err := io.ReadAll(result.Body)
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to read object body", err)
+		return
+	}
+	if closeErr := result.Body.Close(); closeErr != nil {
+		log.Printf("Failed to close response body: %v", closeErr)
+	}
+
+	contentType := "application/octet-stream"
+	if result.ContentType != nil {
+		contentType = *result.ContentType
+	}
+	c.Data(http.StatusOK, contentType, data)
 }
 
 type PutObjectInputJSON struct {
@@ -145,8 +156,12 @@ func (h *ProxyHandler) putObject(ctx context.Context, c *gin.Context, bodyBytes 
 		case []interface{}:
 			data := make([]byte, len(v))
 			for i, b := range v {
-				f, _ := b.(float64)
-				data[i] = byte(f)
+				f, ok := b.(float64)
+				if !ok {
+					sendError(c, http.StatusBadRequest, "Invalid body format", nil)
+					return
+				}
+				data[i] = byte(int(f))
 			}
 			input.Body = bytes.NewReader(data)
 		}

@@ -95,7 +95,10 @@ func TestHealthCheck(t *testing.T) {
 	r := setupTestRouter(handler)
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/health", nil)
+	req, err := http.NewRequest("GET", "/health", nil)
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+	}
 	r.ServeHTTP(w, req)
 
 	if w.Code != http.StatusOK {
@@ -103,7 +106,9 @@ func TestHealthCheck(t *testing.T) {
 	}
 
 	var response map[string]interface{}
-	json.Unmarshal(w.Body.Bytes(), &response)
+	if err := json.Unmarshal(w.Body.Bytes(), &response); err != nil {
+		t.Fatalf("Failed to unmarshal response: %v", err)
+	}
 
 	if response["status"] != "healthy" {
 		t.Errorf("HealthCheck status = %v, want healthy", response["status"])
@@ -164,7 +169,10 @@ func TestServiceRouter(t *testing.T) {
 			r := setupTestRouter(handler)
 
 			w := httptest.NewRecorder()
-			req, _ := http.NewRequest(tt.method, tt.path, nil)
+			req, err := http.NewRequest(tt.method, tt.path, nil)
+			if err != nil {
+				t.Fatalf("Failed to create request: %v", err)
+			}
 			if tt.target != "" {
 				req.Header.Set("X-Amz-Target", tt.target)
 			}
@@ -189,7 +197,10 @@ func TestS3ListBuckets(t *testing.T) {
 	r := setupTestRouter(handler)
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/s3/", nil)
+	req, err := http.NewRequest("GET", "/s3/", nil)
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+	}
 	req.Header.Set("X-Amz-Target", "ListBuckets")
 	r.ServeHTTP(w, req)
 
@@ -204,7 +215,10 @@ func TestCORSHeaders(t *testing.T) {
 	r := setupTestRouter(handler)
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("OPTIONS", "/s3/test", nil)
+	req, err := http.NewRequest("OPTIONS", "/s3/test", nil)
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+	}
 	r.ServeHTTP(w, req)
 
 	if w.Code != http.StatusOK && w.Code != http.StatusBadRequest {
@@ -220,7 +234,10 @@ func TestBackendHealthCheck_Reachable(t *testing.T) {
 	r := setupTestRouter(handler)
 
 	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/_health", nil)
+	req, err := http.NewRequest("GET", "/_health", nil)
+	if err != nil {
+		t.Fatalf("Failed to create request: %v", err)
+	}
 	r.ServeHTTP(w, req)
 
 	if w.Code != http.StatusServiceUnavailable && w.Code != http.StatusOK {
