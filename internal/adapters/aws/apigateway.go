@@ -110,5 +110,3 @@ func (a *APIGatewayAdapter) UpdateStage(ctx context.Context, input *apigateway.U
 func (a *APIGatewayAdapter) DeleteStage(ctx context.Context, input *apigateway.DeleteStageInput) (*apigateway.DeleteStageOutput, error) {
 	return a.client.DeleteStage(ctx, input)
 }
-
-var _ ports.APIGatewayPort = (*APIGatewayAdapter)(nil)

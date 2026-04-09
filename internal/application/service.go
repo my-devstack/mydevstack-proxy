@@ -107,5 +107,3 @@ func (s *ProxyService) IAM() ports.IAMPort {
 func (s *ProxyService) Kinesis() ports.KinesisPort {
 	return s.kinesis
 }
-
-var _ ports.ProxyService = (*ProxyService)(nil)

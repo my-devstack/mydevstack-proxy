@@ -62,5 +62,3 @@ func (a *SecretsManagerAdapter) RotateSecret(ctx context.Context, input *secrets
 func (a *SecretsManagerAdapter) GetRandomPassword(ctx context.Context, input *secretsmanager.GetRandomPasswordInput) (*secretsmanager.GetRandomPasswordOutput, error) {
 	return a.client.GetRandomPassword(ctx, input)
 }
-
-var _ ports.SecretsManagerPort = (*SecretsManagerAdapter)(nil)

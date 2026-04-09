@@ -7,14 +7,13 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
-	"github.com/my-devstack/mydevstack-proxy/internal/ports"
 )
 
 type SNSAdapter struct {
 	client *sns.Client
 }
 
-func NewSNSAdapter(awsCfg aws.Config, endpoint string) ports.SNSPort {
+func NewSNSAdapter(awsCfg aws.Config, endpoint string) *SNSAdapter {
 	httpClient := &http.Client{Timeout: 30 * time.Second}
 	client := sns.NewFromConfig(awsCfg, func(o *sns.Options) {
 		o.BaseEndpoint = aws.String(endpoint)
@@ -54,5 +53,3 @@ func (a *SNSAdapter) ListSubscriptionsByTopic(ctx context.Context, input *sns.Li
 func (a *SNSAdapter) Publish(ctx context.Context, input *sns.PublishInput) (*sns.PublishOutput, error) {
 	return a.client.Publish(ctx, input)
 }
-
-var _ ports.SNSPort = (*SNSAdapter)(nil)

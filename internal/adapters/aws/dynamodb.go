@@ -82,5 +82,3 @@ func (a *DynamoDBAdapter) DescribeTimeToLive(ctx context.Context, input *dynamod
 func (a *DynamoDBAdapter) UpdateTimeToLive(ctx context.Context, input *dynamodb.UpdateTimeToLiveInput) (*dynamodb.UpdateTimeToLiveOutput, error) {
 	return a.client.UpdateTimeToLive(ctx, input)
 }
-
-var _ ports.DynamoDBPort = (*DynamoDBAdapter)(nil)

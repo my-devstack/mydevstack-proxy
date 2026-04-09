@@ -58,5 +58,3 @@ func (a *APIGatewayV2Adapter) GetIntegrations(ctx context.Context, input *apigat
 func (a *APIGatewayV2Adapter) CreateIntegration(ctx context.Context, input *apigatewayv2.CreateIntegrationInput) (*apigatewayv2.CreateIntegrationOutput, error) {
 	return a.client.CreateIntegration(ctx, input)
 }
-
-var _ ports.APIGatewayV2Port = (*APIGatewayV2Adapter)(nil)

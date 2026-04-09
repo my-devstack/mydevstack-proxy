@@ -59,5 +59,3 @@ func (a *S3Adapter) HeadObject(ctx context.Context, input *s3.HeadObjectInput) (
 func (a *S3Adapter) CreateBucket(ctx context.Context, input *s3.CreateBucketInput) (*s3.CreateBucketOutput, error) {
 	return a.client.CreateBucket(ctx, input)
 }
-
-var _ ports.S3Port = (*S3Adapter)(nil)

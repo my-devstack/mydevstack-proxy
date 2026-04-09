@@ -54,5 +54,3 @@ func (a *KMSAdapter) GenerateDataKey(ctx context.Context, input *kms.GenerateDat
 func (a *KMSAdapter) GenerateRandom(ctx context.Context, input *kms.GenerateRandomInput) (*kms.GenerateRandomOutput, error) {
 	return a.client.GenerateRandom(ctx, input)
 }
-
-var _ ports.KMSPort = (*KMSAdapter)(nil)

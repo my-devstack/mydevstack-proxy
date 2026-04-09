@@ -54,5 +54,3 @@ func (a *LambdaAdapter) UpdateFunctionCode(ctx context.Context, input *lambda.Up
 func (a *LambdaAdapter) GetFunctionConfiguration(ctx context.Context, input *lambda.GetFunctionConfigurationInput) (*lambda.GetFunctionConfigurationOutput, error) {
 	return a.client.GetFunctionConfiguration(ctx, input)
 }
-
-var _ ports.LambdaPort = (*LambdaAdapter)(nil)

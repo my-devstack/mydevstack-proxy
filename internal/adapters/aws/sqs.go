@@ -62,5 +62,3 @@ func (a *SQSAdapter) GetQueueAttributes(ctx context.Context, input *sqs.GetQueue
 func (a *SQSAdapter) SetQueueAttributes(ctx context.Context, input *sqs.SetQueueAttributesInput) (*sqs.SetQueueAttributesOutput, error) {
 	return a.client.SetQueueAttributes(ctx, input)
 }
-
-var _ ports.SQSPort = (*SQSAdapter)(nil)
