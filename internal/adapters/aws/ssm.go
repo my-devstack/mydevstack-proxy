@@ -2,23 +2,20 @@ package aws
 
 import (
 	"context"
-	"net/http"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
-	"github.com/my-devstack/mydevstack-proxy/internal/ports"
 )
 
 type SSMAdapter struct {
 	client *ssm.Client
 }
 
-func NewSSMAdapter(awsCfg aws.Config, endpoint string) ports.SSMPort {
-	httpClient := &http.Client{Timeout: 30 * time.Second}
-	client := ssm.NewFromConfig(awsCfg, func(o *ssm.Options) {
-		o.BaseEndpoint = aws.String(endpoint)
-		o.HTTPClient = httpClient
+func NewSSMAdapter(cfg aws.Config, endpoint string) *SSMAdapter {
+	client := ssm.NewFromConfig(cfg, func(o *ssm.Options) {
+		if endpoint != "" {
+			o.BaseEndpoint = aws.String(endpoint)
+		}
 	})
 	return &SSMAdapter{client: client}
 }
@@ -62,5 +59,3 @@ func (a *SSMAdapter) AddTagsToResource(ctx context.Context, input *ssm.AddTagsTo
 func (a *SSMAdapter) RemoveTagsFromResource(ctx context.Context, input *ssm.RemoveTagsFromResourceInput) (*ssm.RemoveTagsFromResourceOutput, error) {
 	return a.client.RemoveTagsFromResource(ctx, input)
 }
-
-var _ ports.SSMPort = (*SSMAdapter)(nil)

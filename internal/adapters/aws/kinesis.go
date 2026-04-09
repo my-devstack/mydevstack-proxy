@@ -82,5 +82,3 @@ func (a *KinesisAdapter) EnableEnhancedMonitoring(ctx context.Context, input *ki
 func (a *KinesisAdapter) DisableEnhancedMonitoring(ctx context.Context, input *kinesis.DisableEnhancedMonitoringInput) (*kinesis.DisableEnhancedMonitoringOutput, error) {
 	return a.client.DisableEnhancedMonitoring(ctx, input)
 }
-
-var _ ports.KinesisPort = (*KinesisAdapter)(nil)

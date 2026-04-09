@@ -130,5 +130,3 @@ func (a *IAMAdapter) ListRolePolicies(ctx context.Context, input *iam.ListRolePo
 func (a *IAMAdapter) GetRolePolicy(ctx context.Context, input *iam.GetRolePolicyInput) (*iam.GetRolePolicyOutput, error) {
 	return a.client.GetRolePolicy(ctx, input)
 }
-
-var _ ports.IAMPort = (*IAMAdapter)(nil)
