@@ -68,13 +68,19 @@ func (h *ProxyHandler) BackendHealthCheck(c *gin.Context) {
 	}
 
 	for _, targetURL := range testURLs {
-		req, _ := http.NewRequest("GET", targetURL, nil)
+		req, err := http.NewRequest("GET", targetURL, nil)
+		if err != nil {
+			log.Printf("Failed to create request for %s: %v", targetURL, err)
+			continue
+		}
 		client := &http.Client{Timeout: 3 * time.Second, CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			return http.ErrUseLastResponse
 		}}
 		resp, err := client.Do(req)
 		if err == nil {
-			resp.Body.Close()
+			if closeErr := resp.Body.Close(); closeErr != nil {
+				log.Printf("Failed to close response body: %v", closeErr)
+			}
 			if resp.StatusCode >= 200 && resp.StatusCode < 400 {
 				c.JSON(http.StatusOK, gin.H{
 					"status":     "healthy",
