@@ -20,7 +20,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.68.4
 	github.com/beabys/ayotl v0.0.13
 	github.com/gin-gonic/gin v1.12.0
-	github.com/joho/godotenv v1.5.1
 )
 
 require (

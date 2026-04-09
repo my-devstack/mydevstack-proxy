@@ -16,7 +16,7 @@ We are committed to providing a welcoming, inclusive, and harassment-free experi
 
 ## Expected Behavior
 
-- Be respectful and inclusive in your language and actions
+- Be respectful in your language and actions
 - Be considerate of others' perspectives and experiences
 - Give and accept constructive feedback gracefully
 - Focus on what is best for the community and project

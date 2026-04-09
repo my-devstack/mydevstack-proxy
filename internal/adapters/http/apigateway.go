@@ -89,16 +89,20 @@ func (h *ProxyHandler) handleAPIGateway(c *gin.Context) {
 }
 
 func (h *ProxyHandler) getRestApis(ctx context.Context, c *gin.Context, bodyBytes []byte) {
+	log.Printf("getRestApis called with body: %s", string(bodyBytes))
 	input := &apigateway.GetRestApisInput{}
 	if err := parseBody(c, bodyBytes, input); err != nil {
+		log.Printf("getRestApis parse error: %v", err)
 		sendError(c, http.StatusBadRequest, "Invalid request body", err)
 		return
 	}
 	result, err := h.svc.APIGateway().GetRestApis(ctx, input)
 	if err != nil {
+		log.Printf("getRestApis error: %v", err)
 		sendError(c, http.StatusInternalServerError, "Failed to get REST APIs", err)
 		return
 	}
+	log.Printf("getRestApis result type: %T", result)
 	c.JSON(http.StatusOK, result)
 }
 
@@ -283,6 +287,11 @@ func (h *ProxyHandler) getResources(ctx context.Context, c *gin.Context, bodyByt
 	}
 	result, err := h.svc.APIGateway().GetResources(ctx, input)
 	if err != nil {
+		errStr := err.Error()
+		if strings.Contains(errStr, "NotFoundException") || strings.Contains(errStr, "not found") || strings.Contains(errStr, "Invalid API") {
+			c.JSON(http.StatusOK, gin.H{"items": []interface{}{}, "item": []interface{}{}})
+			return
+		}
 		sendError(c, http.StatusInternalServerError, "Failed to get resources", err)
 		return
 	}
