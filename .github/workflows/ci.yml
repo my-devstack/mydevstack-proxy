@@ -101,6 +101,7 @@ jobs:
           GOARCH: ${{ matrix.GOARCH }}
           CGO_ENABLED: 0
         run: |
+          mkdir -p dist
           OUTPUT_NAME="${{ matrix.ARTIFACT_NAME }}"
           if [ "$GOOS" = "windows" ]; then
             OUTPUT_NAME="${OUTPUT_NAME}.exe"
@@ -131,16 +132,20 @@ jobs:
       - name: Prepare release files
         run: |
           cd artifacts
-          for dir in */; do
-            mv "$dir"*/* . 2>/dev/null || true
-          done
-          rm -rf */
+          find . -mindepth 2 -type f -print0 | xargs -0 -I{} mv "{}" .
+          rm -rf -- */
           ls -la
 
       - name: Create checksum file
         run: |
           cd artifacts
-          sha256sum * > checksums.txt
+          shopt -s nullglob
+          files=(*)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No release files found to checksum" >&2
+            exit 1
+          fi
+          sha256sum "${files[@]}" > checksums.txt
           cat checksums.txt
 
       - name: Create Release
