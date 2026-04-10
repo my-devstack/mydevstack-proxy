@@ -128,10 +128,27 @@ jobs:
         with:
           path: artifacts
 
+      - name: Create zipped release assets
+        run: |
+          cd artifacts
+          rm -f *.zip checksums.txt
+          shopt -s nullglob
+          for d in */; do
+            [ -d "$d" ] || continue
+            artifact_name="${d%/}"
+            files=("$d"*)
+            if [ ${#files[@]} -eq 0 ]; then
+              echo "No file found in $d"
+              continue
+            fi
+            zip -j "${artifact_name}.zip" "${files[@]}"
+          done
+          ls -la *.zip
+
       - name: Create checksum file
         run: |
           cd artifacts
-          find . -type f ! -name checksums.txt | sort | xargs sha256sum > checksums.txt
+          find . -maxdepth 1 -name '*.zip' | sort | xargs sha256sum > checksums.txt
           cat checksums.txt
 
       - name: Update Release
@@ -139,11 +156,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           files: |
-            artifacts/linux-amd64/*
-            artifacts/linux-arm64/*
-            artifacts/darwin-amd64/*
-            artifacts/darwin-arm64/*
-            artifacts/windows-amd64/*
+            artifacts/*.zip
             artifacts/checksums.txt
           generate_release_notes: true
           draft: false
