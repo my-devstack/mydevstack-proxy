@@ -130,7 +130,9 @@ jobs:
       - name: Prepare release files
         run: |
           cd artifacts
-          find . -mindepth 2 -type f -print0 | xargs -0 -I{} mv "{}" .
+          for dir in */; do
+            mv "$dir"* . 2>/dev/null || true
+          done
           rm -rf -- */
           ls -la
 
