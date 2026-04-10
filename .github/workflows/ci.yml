@@ -130,10 +130,16 @@ jobs:
       - name: Prepare release files
         run: |
           cd artifacts
-          for dir in */; do
-            mv "$dir"* . 2>/dev/null || true
+          for d in */; do
+            for f in "$d"/*; do
+              base=$(basename "$f")
+              mv "$f" "$base.tmp"
+            done
+            rmdir "$d"
           done
-          rm -rf -- */
+          for tmp in *.tmp; do
+            mv "$tmp" "${tmp%.tmp}"
+          done
           ls -la
 
       - name: Create checksum file
