@@ -139,11 +139,11 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           files: |
-            artifacts/linux/amd64/*
-            artifacts/linux/arm64/*
-            artifacts/darwin/amd64/*
-            artifacts/darwin/arm64/*
-            artifacts/windows/amd64/*
+            artifacts/linux-amd64/*
+            artifacts/linux-arm64/*
+            artifacts/darwin-amd64/*
+            artifacts/darwin-arm64/*
+            artifacts/windows-amd64/*
             artifacts/checksums.txt
           generate_release_notes: true
           draft: false
