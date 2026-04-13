@@ -78,8 +78,14 @@ func (s *testProxyService) IAM() ports.IAMPort                       { return ni
 func (s *testProxyService) Kinesis() ports.KinesisPort               { return nil }
 func (s *testProxyService) RDS() ports.RDSPort                       { return nil }
 func (s *testProxyService) Config() *configloader.Config {
-	return &configloader.Config{AwsEndpoint: "http://localhost:4566", AwsRegion: "us-east-1"}
+	return &configloader.Config{AwsEndpoint: "http://localhost:4566"}
 }
+
+func (s *testProxyService) Region() string {
+	return "us-east-1"
+}
+
+func (s *testProxyService) SetRegion(region string) {}
 
 func setupTestRouter(handler *ProxyHandler) *gin.Engine {
 	gin.SetMode(gin.TestMode)

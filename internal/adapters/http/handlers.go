@@ -59,7 +59,27 @@ func (h *ProxyHandler) HealthCheck(c *gin.Context) {
 		"proxy":        "aws-proxy",
 		"target":       h.svc.Config().AwsEndpoint,
 		"endpoint_url": h.svc.Config().AwsEndpoint,
+		"region":       h.svc.Region(),
 	})
+}
+
+func (h *ProxyHandler) SetRegion(c *gin.Context) {
+	var req struct {
+		Region string `json:"region"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request: region is required"})
+		return
+	}
+
+	if req.Region == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Region cannot be empty"})
+		return
+	}
+
+	h.svc.SetRegion(req.Region)
+	c.JSON(http.StatusOK, gin.H{"region": req.Region, "message": "Region updated successfully"})
 }
 
 func (h *ProxyHandler) BackendHealthCheck(c *gin.Context) {
@@ -89,6 +109,7 @@ func (h *ProxyHandler) BackendHealthCheck(c *gin.Context) {
 					"backend":    "reachable",
 					"target":     h.svc.Config().AwsEndpoint,
 					"statusCode": resp.StatusCode,
+					"region":     h.svc.Region(),
 				})
 				return
 			}
@@ -99,6 +120,7 @@ func (h *ProxyHandler) BackendHealthCheck(c *gin.Context) {
 		"status":  "unhealthy",
 		"backend": "unreachable",
 		"target":  h.svc.Config().AwsEndpoint,
+		"region":  h.svc.Region(),
 	})
 }
 

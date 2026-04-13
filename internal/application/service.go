@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"sync"
 
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
@@ -12,6 +13,7 @@ import (
 
 type ProxyService struct {
 	cfg            *configloader.Config
+	region         string
 	secretsManager ports.SecretsManagerPort
 	s3             ports.S3Port
 	lambda         ports.LambdaPort
@@ -25,11 +27,15 @@ type ProxyService struct {
 	iam            ports.IAMPort
 	kinesis        ports.KinesisPort
 	rds            ports.RDSPort
+	mu             sync.RWMutex
 }
 
 func NewProxyService(cfg *configloader.Config) (ports.ProxyService, error) {
+	// Default region is us-east-1 if not set
+	region := "us-east-1"
+
 	awsCfg, err := awsconfig.LoadDefaultConfig(context.Background(),
-		awsconfig.WithRegion(cfg.AwsRegion),
+		awsconfig.WithRegion(region),
 		awsconfig.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
 			cfg.AwsAccessKey,
 			cfg.AwsSecretKey,
@@ -42,6 +48,7 @@ func NewProxyService(cfg *configloader.Config) (ports.ProxyService, error) {
 
 	return &ProxyService{
 		cfg:            cfg,
+		region:         region,
 		secretsManager: awsadapter.NewSecretsManagerAdapter(awsCfg, cfg.AwsEndpoint),
 		s3:             awsadapter.NewS3Adapter(awsCfg, cfg.AwsEndpoint),
 		lambda:         awsadapter.NewLambdaAdapter(awsCfg, cfg.AwsEndpoint),
@@ -60,6 +67,18 @@ func NewProxyService(cfg *configloader.Config) (ports.ProxyService, error) {
 
 func (s *ProxyService) Config() *configloader.Config {
 	return s.cfg
+}
+
+func (s *ProxyService) Region() string {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	return s.region
+}
+
+func (s *ProxyService) SetRegion(region string) {
+	s.mu.Lock()
+	s.region = region
+	s.mu.Unlock()
 }
 
 func (s *ProxyService) SecretsManager() ports.SecretsManagerPort {

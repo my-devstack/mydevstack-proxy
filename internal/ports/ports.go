@@ -34,6 +34,8 @@ type ProxyService interface {
 	Kinesis() KinesisPort
 	RDS() RDSPort
 	Config() *configloader.Config
+	Region() string
+	SetRegion(region string)
 }
 
 type S3Port interface {
