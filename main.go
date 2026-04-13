@@ -23,7 +23,6 @@ func main() {
 	log.Printf("Starting AWS Proxy Server...")
 	log.Printf("  Port: %s", cfg.Port)
 	log.Printf("  AWS Endpoint: %s", cfg.AwsEndpoint)
-	log.Printf("  AWS Region: %s", cfg.AwsRegion)
 
 	container, err := bootstrap.NewContainer(cfg)
 	if err != nil {
@@ -60,7 +59,6 @@ func defaultConfig() *configloader.Config {
 	return &configloader.Config{
 		Port:           getEnv("PROXY_PORT", "8081"),
 		AwsEndpoint:    getEnv("AWS_ENDPOINT", "http://localhost:4566"),
-		AwsRegion:      getEnv("AWS_REGION", "us-east-1"),
 		AwsAccessKey:   getEnv("AWS_ACCESS_KEY", "test"),
 		AwsSecretKey:   getEnv("AWS_SECRET_KEY", "test"),
 		ServicePattern: getEnv("SERVICE_PATTERN", "root"),
@@ -85,7 +83,8 @@ func setupRoutes(r *gin.Engine, handler *http2.ProxyHandler) {
 				"x-amz-id-2, x-amz-request-id, Accept, Accept-Encoding, "+
 				"Content-Length, Host, User-Agent, "+
 				"x-amz-invocation-type, x-amz-log-type, x-amz-client-context, "+
-				"amz-sdk-request, amz-sdk-invocation-id, amz-content-sha256")
+				"amz-sdk-request, amz-sdk-invocation-id, amz-content-sha256, "+
+				"X-Mock-Signature")
 
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusOK)
@@ -96,7 +95,7 @@ func setupRoutes(r *gin.Engine, handler *http2.ProxyHandler) {
 
 	r.GET("/health", handler.BackendHealthCheck)
 	r.GET("/_health", handler.BackendHealthCheck)
-	r.GET("/proxy/health", handler.HealthCheck)
+	r.POST("/proxy/region", handler.SetRegion)
 
 	r.Any("/:service/*path", handler.ServiceRouter)
 }
