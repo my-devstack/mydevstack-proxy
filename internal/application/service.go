@@ -24,6 +24,7 @@ type ProxyService struct {
 	ssm            ports.SSMPort
 	iam            ports.IAMPort
 	kinesis        ports.KinesisPort
+	rds            ports.RDSPort
 }
 
 func NewProxyService(cfg *configloader.Config) (ports.ProxyService, error) {
@@ -53,6 +54,7 @@ func NewProxyService(cfg *configloader.Config) (ports.ProxyService, error) {
 		ssm:            awsadapter.NewSSMAdapter(awsCfg, cfg.AwsEndpoint),
 		iam:            awsadapter.NewIAMAdapter(awsCfg, cfg.AwsEndpoint),
 		kinesis:        awsadapter.NewKinesisAdapter(awsCfg, cfg.AwsEndpoint),
+		rds:            awsadapter.NewRDSAdapter(awsCfg, cfg.AwsEndpoint),
 	}, nil
 }
 
@@ -106,4 +108,8 @@ func (s *ProxyService) IAM() ports.IAMPort {
 
 func (s *ProxyService) Kinesis() ports.KinesisPort {
 	return s.kinesis
+}
+
+func (s *ProxyService) RDS() ports.RDSPort {
+	return s.rds
 }

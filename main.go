@@ -45,6 +45,7 @@ func main() {
 	log.Printf("  SNS:             http://localhost:%s/sns/", cfg.Port)
 	log.Printf("  KMS:             http://localhost:%s/kms/", cfg.Port)
 	log.Printf("  DynamoDB:        http://localhost:%s/dynamodb/", cfg.Port)
+	log.Printf("  RDS:             http://localhost:%s/rds/", cfg.Port)
 
 	if err := r.Run(addr); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
@@ -58,7 +59,7 @@ func loadConfig() (*configloader.Config, error) {
 func defaultConfig() *configloader.Config {
 	return &configloader.Config{
 		Port:           getEnv("PROXY_PORT", "8081"),
-		AwsEndpoint:    getEnv("AWS_ENDPOINT", "http://localhost:4550"),
+		AwsEndpoint:    getEnv("AWS_ENDPOINT", "http://localhost:4566"),
 		AwsRegion:      getEnv("AWS_REGION", "us-east-1"),
 		AwsAccessKey:   getEnv("AWS_ACCESS_KEY", "test"),
 		AwsSecretKey:   getEnv("AWS_SECRET_KEY", "test"),
