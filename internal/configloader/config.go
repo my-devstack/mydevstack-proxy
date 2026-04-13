@@ -19,7 +19,7 @@ type Config struct {
 func (c *Config) SetDefaults() config.ConfigMap {
 	defaults := make(config.ConfigMap)
 	defaults["port"] = "8081"
-	defaults["aws_endpoint"] = "http://localhost:4550"
+	defaults["aws_endpoint"] = "http://localhost:4566"
 	defaults["aws_region"] = "us-east-1"
 	defaults["aws_access_key"] = "test"
 	defaults["aws_secret_key"] = "test"

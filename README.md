@@ -26,7 +26,7 @@ This is particularly useful for:
 git clone https://github.com/my-devstack/mydevstack-proxy.git
 cd mydevstack-proxy
 
-# Run with default settings (LocalStack on port 4550)
+# Run with default settings (LocalStack on port 4566)
 go run main.go
 
 # Or specify custom port
@@ -70,7 +70,7 @@ Create `config.yaml` or `config.json`:
 
 ```yaml
 port: "8081"
-aws_endpoint: "http://localhost:4550"
+aws_endpoint: "http://localhost:4566"
 aws_region: "us-east-1"
 aws_access_key: "test"
 aws_secret_key: "test"
