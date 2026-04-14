@@ -77,6 +77,7 @@ func (s *testProxyService) SSM() ports.SSMPort                       { return ni
 func (s *testProxyService) IAM() ports.IAMPort                       { return nil }
 func (s *testProxyService) Kinesis() ports.KinesisPort               { return nil }
 func (s *testProxyService) RDS() ports.RDSPort                       { return nil }
+func (s *testProxyService) ElastiCache() ports.ElastiCachePort       { return nil }
 func (s *testProxyService) Config() *configloader.Config {
 	return &configloader.Config{AwsEndpoint: "http://localhost:4566"}
 }

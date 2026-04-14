@@ -101,6 +101,8 @@ service_pattern: "root"
 | SSM | `/ssm/*` | `curl /ssm/ -H "X-Amz-Target: GetParameter"` |
 | IAM | `/iam/*` | `curl /iam/ -H "X-Amz-Target: ListUsers"` |
 | Kinesis | `/kinesis/*` | `curl /kinesis/ -H "X-Amz-Target: ListStreams"` |
+| RDS | `/rds/*` | `curl /rds/ -H "X-Amz-Target: DescribeDBInstances"` |
+| ElastiCache | `/elasticache/*` | `curl /elasticache/ -H "X-Amz-Target: DescribeCacheClusters"` |
 
 ## Architecture
 
