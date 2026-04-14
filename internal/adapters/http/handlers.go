@@ -78,7 +78,11 @@ func (h *ProxyHandler) SetRegion(c *gin.Context) {
 		return
 	}
 
-	h.svc.SetRegion(req.Region)
+	if err := h.svc.SetRegion(req.Region); err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to update region", err)
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{"region": req.Region, "message": "Region updated successfully"})
 }
 

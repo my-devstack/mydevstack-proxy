@@ -30,39 +30,14 @@ type ProxyService struct {
 	mu             sync.RWMutex
 }
 
-func NewProxyService(cfg *configloader.Config) (ports.ProxyService, error) {
+func NewProxyService(cfg *configloader.Config) ports.ProxyService {
 	// Default region is us-east-1 if not set
 	region := "us-east-1"
 
-	awsCfg, err := awsconfig.LoadDefaultConfig(context.Background(),
-		awsconfig.WithRegion(region),
-		awsconfig.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
-			cfg.AwsAccessKey,
-			cfg.AwsSecretKey,
-			"",
-		)),
-	)
-	if err != nil {
-		return nil, err
-	}
-
 	return &ProxyService{
-		cfg:            cfg,
-		region:         region,
-		secretsManager: awsadapter.NewSecretsManagerAdapter(awsCfg, cfg.AwsEndpoint),
-		s3:             awsadapter.NewS3Adapter(awsCfg, cfg.AwsEndpoint),
-		lambda:         awsadapter.NewLambdaAdapter(awsCfg, cfg.AwsEndpoint),
-		sqs:            awsadapter.NewSQSAdapter(awsCfg, cfg.AwsEndpoint),
-		sns:            awsadapter.NewSNSAdapter(awsCfg, cfg.AwsEndpoint),
-		kms:            awsadapter.NewKMSAdapter(awsCfg, cfg.AwsEndpoint),
-		dynamodb:       awsadapter.NewDynamoDBAdapter(awsCfg, cfg.AwsEndpoint),
-		apigateway:     awsadapter.NewAPIGatewayAdapter(awsCfg, cfg.AwsEndpoint),
-		apigatewayv2:   awsadapter.NewAPIGatewayV2Adapter(awsCfg, cfg.AwsEndpoint),
-		ssm:            awsadapter.NewSSMAdapter(awsCfg, cfg.AwsEndpoint),
-		iam:            awsadapter.NewIAMAdapter(awsCfg, cfg.AwsEndpoint),
-		kinesis:        awsadapter.NewKinesisAdapter(awsCfg, cfg.AwsEndpoint),
-		rds:            awsadapter.NewRDSAdapter(awsCfg, cfg.AwsEndpoint),
-	}, nil
+		cfg:    cfg,
+		region: region,
+	}
 }
 
 func (s *ProxyService) Config() *configloader.Config {
@@ -75,10 +50,45 @@ func (s *ProxyService) Region() string {
 	return s.region
 }
 
-func (s *ProxyService) SetRegion(region string) {
+func (s *ProxyService) SetRegion(region string) error {
 	s.mu.Lock()
+	defer s.mu.Unlock()
+
 	s.region = region
-	s.mu.Unlock()
+
+	// Recreate all adapters with the new region
+	if err := s.SetServices(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *ProxyService) SetServices() error {
+	awsCfg, err := awsconfig.LoadDefaultConfig(context.Background(),
+		awsconfig.WithRegion(s.region),
+		awsconfig.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
+			s.cfg.AwsAccessKey,
+			s.cfg.AwsSecretKey,
+			"",
+		)),
+	)
+	if err != nil {
+		return err
+	}
+	s.secretsManager = awsadapter.NewSecretsManagerAdapter(awsCfg, s.cfg.AwsEndpoint)
+	s.s3 = awsadapter.NewS3Adapter(awsCfg, s.cfg.AwsEndpoint)
+	s.lambda = awsadapter.NewLambdaAdapter(awsCfg, s.cfg.AwsEndpoint)
+	s.sqs = awsadapter.NewSQSAdapter(awsCfg, s.cfg.AwsEndpoint)
+	s.sns = awsadapter.NewSNSAdapter(awsCfg, s.cfg.AwsEndpoint)
+	s.kms = awsadapter.NewKMSAdapter(awsCfg, s.cfg.AwsEndpoint)
+	s.dynamodb = awsadapter.NewDynamoDBAdapter(awsCfg, s.cfg.AwsEndpoint)
+	s.apigateway = awsadapter.NewAPIGatewayAdapter(awsCfg, s.cfg.AwsEndpoint)
+	s.apigatewayv2 = awsadapter.NewAPIGatewayV2Adapter(awsCfg, s.cfg.AwsEndpoint)
+	s.ssm = awsadapter.NewSSMAdapter(awsCfg, s.cfg.AwsEndpoint)
+	s.iam = awsadapter.NewIAMAdapter(awsCfg, s.cfg.AwsEndpoint)
+	s.kinesis = awsadapter.NewKinesisAdapter(awsCfg, s.cfg.AwsEndpoint)
+	s.rds = awsadapter.NewRDSAdapter(awsCfg, s.cfg.AwsEndpoint)
+	return nil
 }
 
 func (s *ProxyService) SecretsManager() ports.SecretsManagerPort {

@@ -14,8 +14,9 @@ type Container struct {
 }
 
 func NewContainer(cfg *configloader.Config) (*Container, error) {
-	svc, err := application.NewProxyService(cfg)
-	if err != nil {
+	svc := application.NewProxyService(cfg)
+	// Initialize adapters with default region
+	if err := svc.SetServices(); err != nil {
 		return nil, err
 	}
 

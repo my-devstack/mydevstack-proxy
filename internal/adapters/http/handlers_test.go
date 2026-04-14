@@ -85,7 +85,13 @@ func (s *testProxyService) Region() string {
 	return "us-east-1"
 }
 
-func (s *testProxyService) SetRegion(region string) {}
+func (s *testProxyService) SetRegion(region string) error {
+	return nil
+}
+
+func (s *testProxyService) SetServices() error {
+	return nil
+}
 
 func setupTestRouter(handler *ProxyHandler) *gin.Engine {
 	gin.SetMode(gin.TestMode)
