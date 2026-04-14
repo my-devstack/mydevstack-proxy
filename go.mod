@@ -9,6 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.39.1
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.34.1
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.57.1
+	github.com/aws/aws-sdk-go-v2/service/elasticache v1.52.0
 	github.com/aws/aws-sdk-go-v2/service/iam v1.53.7
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.43.5
 	github.com/aws/aws-sdk-go-v2/service/kms v1.50.4

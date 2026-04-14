@@ -48,6 +48,8 @@ func (h *ProxyHandler) ServiceRouter(c *gin.Context) {
 		h.handleKinesis(c)
 	case "rds":
 		h.handleRDS(c)
+	case "elasticache":
+		h.handleElastiCache(c)
 	default:
 		c.JSON(http.StatusNotFound, gin.H{"error": "Service not supported: " + service})
 	}
