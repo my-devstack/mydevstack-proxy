@@ -35,7 +35,8 @@ type ProxyService interface {
 	RDS() RDSPort
 	Config() *configloader.Config
 	Region() string
-	SetRegion(region string)
+	SetRegion(region string) error
+	SetServices() error
 }
 
 type S3Port interface {

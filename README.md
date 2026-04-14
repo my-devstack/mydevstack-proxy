@@ -37,11 +37,19 @@ PORT=8081 go run main.go
 
 ```bash
 # Test health endpoint
-curl http://localhost:8081/proxy/health
+curl http://localhost:8081/_health
 
 # List S3 buckets (requires LocalStack running)
-curl -X GET http://localhost:8081/s3/ \
-  -H "X-Amz-Target: ListBuckets"
+curl http://localhost:8081/s3/ -H "X-Amz-Target: ListBuckets"
+```
+
+### Change Region Dynamically
+
+```bash
+# Switch to a different region (e.g., eu-west-2)
+curl -X POST http://localhost:8081/proxy/region \
+  -H "Content-Type: application/json" \
+  -d '{"region": "eu-west-2"}'
 ```
 
 ## Requirements
@@ -58,8 +66,7 @@ curl -X GET http://localhost:8081/s3/ \
 
 ```bash
 export PORT=8081                      # Server port (default: 8081)
-export AWS_ENDPOINT=http://localhost:4566  # AWS backend
-export AWS_REGION=us-east-1           # AWS region
+export AWS_ENDPOINT=http://localhost:4566  # AWS backend (LocalStack)
 export AWS_ACCESS_KEY=test            # Access key
 export AWS_SECRET_KEY=test             # Secret key
 ```
@@ -71,10 +78,12 @@ Create `config.yaml` or `config.json`:
 ```yaml
 port: "8081"
 aws_endpoint: "http://localhost:4566"
-aws_region: "us-east-1"
 aws_access_key: "test"
 aws_secret_key: "test"
+service_pattern: "root"
 ```
+
+**Note:** Region is set dynamically via the `/proxy/region` endpoint, not in configuration. Default region is `us-east-1`.
 
 ## Supported AWS Services
 
@@ -99,17 +108,20 @@ aws_secret_key: "test"
 ┌─────────────────────────────────────────────────────────┐
 │                    Your Application                     │
 └─────────────────────┬───────────────────────────────────┘
-                      │ HTTP Request + X-Amz-Target
-                      ▼
+                       │ HTTP Request + X-Amz-Target
+                       ▼
 ┌─────────────────────────────────────────────────────────┐
 │                   mydevstack-proxy                       │
 │  ┌─────────────┐    ┌─────────────┐    ┌────────────┐ │
 │  │   Handler   │ →  │ Application │ →  │   AWS      │ │
 │  │   (HTTP)    │    │   Service   │    │  Adapters  │ │
 │  └─────────────┘    └─────────────┘    └────────────┘ │
+│                           │                              │
+│                    SetRegion()                          │
+│                    SetServices() ◄─ Recreates adapters │
 └─────────────────────┬───────────────────────────────────┘
-                      │ Forward to AWS Endpoint
-                      ▼
+                       │ Forward to AWS Endpoint
+                       ▼
 ┌─────────────────────────────────────────────────────────┐
 │              LocalStack / Real AWS                       │
 └─────────────────────────────────────────────────────────┘
@@ -121,15 +133,22 @@ aws_secret_key: "test"
 .
 ├── main.go                 # Application entry point
 ├── bootstrap/
-│   └── wire.go            # Dependency injection
+│   └── wire.go            # Dependency injection container
 └── internal/
-    ├── config/             # Configuration (ayotl)
-    ├── ports/             # Interface definitions
-    ├── application/       # Business logic
+    ├── config/             # Configuration loader (ayotl)
+    ├── ports/             # Interface definitions (interfaces)
+    ├── application/       # Business logic (ProxyService)
+    │   └── service.go     # SetRegion(), SetServices()
     └── adapters/
-        ├── aws/           # AWS SDK adapters
+        ├── aws/           # AWS SDK adapters (12 services)
         └── http/          # HTTP handlers
 ```
+
+### Key Design Patterns
+
+1. **Lazy Initialization** - AWS clients are created in `SetServices()`, not in constructor
+2. **Region Switching** - Call `POST /proxy/region` to change region and recreate all adapters
+3. **Interface-Driven** - Ports define contracts, Adapters implement them
 
 ## X-Amz-Target Header
 
