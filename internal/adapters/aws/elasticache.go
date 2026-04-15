@@ -11,7 +11,7 @@ import (
 )
 
 type ElastiCacheAdapter struct {
-	client *elasticache.Client
+	client ports.ElastiCacheClientPort
 }
 
 func NewElastiCacheAdapter(awsCfg aws.Config, endpoint string) ports.ElastiCachePort {

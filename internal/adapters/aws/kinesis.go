@@ -11,7 +11,7 @@ import (
 )
 
 type KinesisAdapter struct {
-	client *kinesis.Client
+	client ports.KinesisClientPort
 }
 
 func NewKinesisAdapter(awsCfg aws.Config, endpoint string) ports.KinesisPort {

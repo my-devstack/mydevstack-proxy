@@ -17,6 +17,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
+	config "github.com/beabys/ayotl"
 	configloader "github.com/my-devstack/mydevstack-proxy/internal/config"
 )
 
@@ -241,4 +242,10 @@ type ElastiCachePort interface {
 	DescribeReplicationGroups(ctx context.Context, input *elasticache.DescribeReplicationGroupsInput) (*elasticache.DescribeReplicationGroupsOutput, error)
 	CreateReplicationGroup(ctx context.Context, input *elasticache.CreateReplicationGroupInput) (*elasticache.CreateReplicationGroupOutput, error)
 	DeleteReplicationGroup(ctx context.Context, input *elasticache.DeleteReplicationGroupInput) (*elasticache.DeleteReplicationGroupOutput, error)
+}
+
+type ConfigPort interface {
+	GetConfigs() *configloader.Config
+	LoadConfig(ctx context.Context) (ConfigPort, error)
+	SetDefaults() config.ConfigMap
 }

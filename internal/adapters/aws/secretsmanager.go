@@ -11,7 +11,7 @@ import (
 )
 
 type SecretsManagerAdapter struct {
-	client *secretsmanager.Client
+	client ports.SecretsManagerClientPort
 }
 
 func NewSecretsManagerAdapter(awsCfg aws.Config, endpoint string) ports.SecretsManagerPort {

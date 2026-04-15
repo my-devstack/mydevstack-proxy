@@ -7,10 +7,11 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
+	"github.com/my-devstack/mydevstack-proxy/internal/ports"
 )
 
 type SNSAdapter struct {
-	client *sns.Client
+	client ports.SNSClientPort
 }
 
 func NewSNSAdapter(awsCfg aws.Config, endpoint string) *SNSAdapter {

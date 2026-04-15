@@ -1,7 +1,6 @@
 package httphandlers
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -11,50 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 	configloader "github.com/my-devstack/mydevstack-proxy/internal/config"
 	"github.com/my-devstack/mydevstack-proxy/internal/ports"
+	mockports "github.com/my-devstack/mydevstack-proxy/mocks/ports"
+	"github.com/stretchr/testify/mock"
 )
-
-type mockS3Port struct {
-	listBucketsFunc func(ctx context.Context) (*s3.ListBucketsOutput, error)
-}
-
-func (m *mockS3Port) ListBuckets(ctx context.Context) (*s3.ListBucketsOutput, error) {
-	if m.listBucketsFunc != nil {
-		return m.listBucketsFunc(ctx)
-	}
-	return &s3.ListBucketsOutput{}, nil
-}
-
-func (m *mockS3Port) ListObjectsV2(ctx context.Context, input *s3.ListObjectsV2Input) (*s3.ListObjectsV2Output, error) {
-	return nil, nil
-}
-
-func (m *mockS3Port) GetObject(ctx context.Context, input *s3.GetObjectInput) (*s3.GetObjectOutput, error) {
-	return nil, nil
-}
-
-func (m *mockS3Port) PutObject(ctx context.Context, input *s3.PutObjectInput) (*s3.PutObjectOutput, error) {
-	return nil, nil
-}
-
-func (m *mockS3Port) DeleteObject(ctx context.Context, input *s3.DeleteObjectInput) (*s3.DeleteObjectOutput, error) {
-	return nil, nil
-}
-
-func (m *mockS3Port) DeleteBucket(ctx context.Context, input *s3.DeleteBucketInput) (*s3.DeleteBucketOutput, error) {
-	return nil, nil
-}
-
-func (m *mockS3Port) HeadBucket(ctx context.Context, input *s3.HeadBucketInput) (*s3.HeadBucketOutput, error) {
-	return nil, nil
-}
-
-func (m *mockS3Port) HeadObject(ctx context.Context, input *s3.HeadObjectInput) (*s3.HeadObjectOutput, error) {
-	return nil, nil
-}
-
-func (m *mockS3Port) CreateBucket(ctx context.Context, input *s3.CreateBucketInput) (*s3.CreateBucketOutput, error) {
-	return nil, nil
-}
 
 type testProxyService struct {
 	s3Port ports.S3Port
@@ -172,12 +130,10 @@ func TestServiceRouter(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			mockS3 := mockports.NewS3Port(t)
+			mockS3.EXPECT().ListBuckets(mock.Anything).Return(&s3.ListBucketsOutput{}, nil).Maybe()
 			svc := &testProxyService{
-				s3Port: &mockS3Port{
-					listBucketsFunc: func(ctx context.Context) (*s3.ListBucketsOutput, error) {
-						return &s3.ListBucketsOutput{}, nil
-					},
-				},
+				s3Port: mockS3,
 			}
 			handler := NewProxyHandler(svc)
 			r := setupTestRouter(handler)
@@ -200,12 +156,10 @@ func TestServiceRouter(t *testing.T) {
 }
 
 func TestS3ListBuckets(t *testing.T) {
+	mockS3 := mockports.NewS3Port(t)
+	mockS3.EXPECT().ListBuckets(mock.Anything).Return(&s3.ListBucketsOutput{}, nil)
 	svc := &testProxyService{
-		s3Port: &mockS3Port{
-			listBucketsFunc: func(ctx context.Context) (*s3.ListBucketsOutput, error) {
-				return &s3.ListBucketsOutput{}, nil
-			},
-		},
+		s3Port: mockS3,
 	}
 	handler := NewProxyHandler(svc)
 	r := setupTestRouter(handler)

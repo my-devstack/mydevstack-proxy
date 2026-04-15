@@ -11,7 +11,7 @@ import (
 )
 
 type LambdaAdapter struct {
-	client *lambda.Client
+	client ports.LambdaClientPort
 }
 
 func NewLambdaAdapter(awsCfg aws.Config, endpoint string) ports.LambdaPort {

@@ -11,7 +11,7 @@ import (
 )
 
 type RDSAdapter struct {
-	client *rds.Client
+	client ports.RDSClientPort
 }
 
 func NewRDSAdapter(awsCfg aws.Config, endpoint string) ports.RDSPort {

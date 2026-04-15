@@ -178,6 +178,73 @@ air
 golangci-lint run
 ```
 
+### Using Mockery for Interface Mocks
+
+This project uses [mockery](https://github.com/vektra/mockery) to generate mocks for interfaces in unit tests.
+
+#### Generating Mocks
+
+To generate all mocks defined in `.mockery.yaml`:
+
+```bash
+# Install mockery (if not already installed)
+go install github.com/vektra/mockery/v2@latest
+
+# Generate all mocks
+mockery
+```
+
+#### Configuration
+
+The `.mockery.yaml` file is located in the project root and configures how mocks are generated:
+
+```yaml
+all: true                           # Generate mocks for all interfaces in the package
+structname: '{{.InterfaceName}}'   # Use interface name as struct name
+template: testify                   # Use testify template for mock generation
+packages:
+  github.com/my-devstack/mydevstack-proxy/internal/ports:
+    config:
+      dir: mocks/ports              # Output directory for mocks
+      filename: "{{.InterfaceName}}.go"  # File naming pattern
+```
+
+#### Adding New Interfaces
+
+To add mocks for a new interface:
+
+1. Ensure the interface is defined in `internal/ports/`
+2. Run `mockery` to regenerate all mocks (the new interface will be auto-detected)
+3. Use the generated mock in tests:
+
+```go
+import mockports "github.com/my-devstack/mydevstack-proxy/mocks/ports"
+
+// In your test file:
+mockS3 := mockports.NewS3Port(t)
+mockS3.EXPECT().ListBuckets(mock.Anything).Return(&s3.ListBucketsOutput{}, nil)
+```
+
+#### Mock Location
+
+Generated mocks are stored in `mocks/ports/` directory:
+
+- `ProxyService.go` - Mock for ProxyService interface
+- `S3Port.go` - Mock for S3Port interface
+- `LambdaPort.go` - Mock for LambdaPort interface
+- `SecretsManagerPort.go` - Mock for SecretsManagerPort interface
+- `SQSPort.go` - Mock for SQSPort interface
+- `SNSPort.go` - Mock for SNSPort interface
+- `KMSPort.go` - Mock for KMSPort interface
+- `DynamoDBPort.go` - Mock for DynamoDBPort interface
+- `APIGatewayPort.go` - Mock for APIGatewayPort interface
+- `APIGatewayV2Port.go` - Mock for APIGatewayV2Port interface
+- `SSMPort.go` - Mock for SSMPort interface
+- `IAMPort.go` - Mock for IAMPort interface
+- `KinesisPort.go` - Mock for KinesisPort interface
+- `RDSPort.go` - Mock for RDSPort interface
+- `ElastiCachePort.go` - Mock for ElastiCachePort interface
+
 ## Contributing
 
 Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on:
