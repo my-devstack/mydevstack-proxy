@@ -47,8 +47,6 @@ func (h *ProxyHandler) handleAPIGateway(c *gin.Context) {
 		h.deleteMethod(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "PutIntegration"):
 		h.putIntegration(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "GetIntegration"):
-		h.getIntegration(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "DeleteIntegration"):
 		h.deleteIntegration(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "CreateDeployment"):
@@ -77,10 +75,12 @@ func (h *ProxyHandler) handleAPIGateway(c *gin.Context) {
 		h.createRoute(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "DeleteRoute"):
 		h.deleteRoute(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "GetIntegrations"):
-		h.getIntegrationsV2(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "CreateIntegration"):
+	case strings.Contains(xAmzTarget, "CreateIntegration"): // Note: Must come AFTER CreateRoute
 		h.createIntegrationV2(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "GetIntegrations"): // Note: Must come BEFORE GetIntegration
+		h.getIntegrationsV2(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "GetIntegration"): // REST API v1 handler
+		h.getIntegration(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "ImportRestApi"):
 		h.importRestApi(ctx, c, bodyBytes)
 	default:
