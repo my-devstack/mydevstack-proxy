@@ -11,7 +11,7 @@ import (
 )
 
 type KMSAdapter struct {
-	client *kms.Client
+	client ports.KMSClientPort
 }
 
 func NewKMSAdapter(awsCfg aws.Config, endpoint string) ports.KMSPort {

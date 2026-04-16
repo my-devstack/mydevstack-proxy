@@ -11,7 +11,7 @@ import (
 )
 
 type SQSAdapter struct {
-	client *sqs.Client
+	client ports.SQSClientPort
 }
 
 func NewSQSAdapter(awsCfg aws.Config, endpoint string) ports.SQSPort {

@@ -11,7 +11,7 @@ import (
 )
 
 type S3Adapter struct {
-	client *s3.Client
+	client ports.S3ClientPort
 }
 
 func NewS3Adapter(awsCfg aws.Config, endpoint string) ports.S3Port {

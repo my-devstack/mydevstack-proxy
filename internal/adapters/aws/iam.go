@@ -11,7 +11,7 @@ import (
 )
 
 type IAMAdapter struct {
-	client *iam.Client
+	client ports.IAMClientPort
 }
 
 func NewIAMAdapter(awsCfg aws.Config, endpoint string) ports.IAMPort {

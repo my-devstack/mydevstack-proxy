@@ -11,7 +11,7 @@ import (
 )
 
 type DynamoDBAdapter struct {
-	client *dynamodb.Client
+	client ports.DynamoDBClientPort
 }
 
 func NewDynamoDBAdapter(awsCfg aws.Config, endpoint string) ports.DynamoDBPort {

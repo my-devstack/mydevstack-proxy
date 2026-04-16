@@ -10,8 +10,11 @@ import (
 	"github.com/my-devstack/mydevstack-proxy/internal/ports"
 )
 
+// Ensure APIGatewayAdapter implements the port interface
+var _ ports.APIGatewayPort = (*APIGatewayAdapter)(nil)
+
 type APIGatewayAdapter struct {
-	client *apigateway.Client
+	client ports.APIGatewayClientPort
 }
 
 func NewAPIGatewayAdapter(awsCfg aws.Config, endpoint string) ports.APIGatewayPort {
@@ -21,10 +24,6 @@ func NewAPIGatewayAdapter(awsCfg aws.Config, endpoint string) ports.APIGatewayPo
 		o.HTTPClient = httpClient
 	})
 	return &APIGatewayAdapter{client: client}
-}
-
-func (a *APIGatewayAdapter) GetRestApis(ctx context.Context, input *apigateway.GetRestApisInput) (*apigateway.GetRestApisOutput, error) {
-	return a.client.GetRestApis(ctx, input)
 }
 
 func (a *APIGatewayAdapter) CreateRestApi(ctx context.Context, input *apigateway.CreateRestApiInput) (*apigateway.CreateRestApiOutput, error) {
@@ -41,6 +40,10 @@ func (a *APIGatewayAdapter) DeleteRestApi(ctx context.Context, input *apigateway
 
 func (a *APIGatewayAdapter) GetRestApi(ctx context.Context, input *apigateway.GetRestApiInput) (*apigateway.GetRestApiOutput, error) {
 	return a.client.GetRestApi(ctx, input)
+}
+
+func (a *APIGatewayAdapter) GetRestApis(ctx context.Context, input *apigateway.GetRestApisInput) (*apigateway.GetRestApisOutput, error) {
+	return a.client.GetRestApis(ctx, input)
 }
 
 func (a *APIGatewayAdapter) UpdateRestApi(ctx context.Context, input *apigateway.UpdateRestApiInput) (*apigateway.UpdateRestApiOutput, error) {

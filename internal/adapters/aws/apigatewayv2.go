@@ -11,7 +11,7 @@ import (
 )
 
 type APIGatewayV2Adapter struct {
-	client *apigatewayv2.Client
+	client ports.APIGatewayV2ClientPort
 }
 
 func NewAPIGatewayV2Adapter(awsCfg aws.Config, endpoint string) ports.APIGatewayV2Port {

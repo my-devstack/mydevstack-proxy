@@ -5,10 +5,11 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
+	"github.com/my-devstack/mydevstack-proxy/internal/ports"
 )
 
 type SSMAdapter struct {
-	client *ssm.Client
+	client ports.SSMClientPort
 }
 
 func NewSSMAdapter(cfg aws.Config, endpoint string) *SSMAdapter {
