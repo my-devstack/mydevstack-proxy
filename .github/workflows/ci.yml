@@ -106,7 +106,7 @@ jobs:
             BINARY_NAME="${BINARY_NAME}.exe"
           fi
           mkdir -p "dist/${GOOS}/${GOARCH}"
-          go build -ldflags="-s -w -X main.Version=${{ steps.tag.outputs.VERSION }} -X main.BuildDate=${{ steps.tag.outputs.DATE }}" -o "dist/${GOOS}/${GOARCH}/${BINARY_NAME}" .
+          go build -ldflags="-s -w -X main.Version=${{ steps.tag.outputs.VERSION }} -X main.BuildDate=${{ steps.tag.outputs.DATE }}" -o "dist/${GOOS}/${GOARCH}/${BINARY_NAME}" ./cmd/server
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

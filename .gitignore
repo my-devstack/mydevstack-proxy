@@ -1,0 +1,14 @@
+.dev/
+.env
+mydevstack-proxy
+testCoverage*
+unit.html
+coverage.txt
+coverage.out
+*.log
+*.exe
+*.dll
+.vscode/
+.idea/
+.DS_Store
+dist/
