@@ -110,6 +110,8 @@ func (h *ProxyHandler) handleAPIGateway(c *gin.Context) {
 		h.putIntegration(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "GetIntegration"): // REST API v1 handler
 		h.getIntegration(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "DeleteIntegration") && strings.HasPrefix(xAmzTarget, "APIGateway."): // REST API v1
+		h.deleteIntegration(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "CreateDeployment"):
 		h.createDeployment(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "DeleteDeployment"):
