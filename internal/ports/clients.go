@@ -39,6 +39,7 @@ type APIGatewayClientPort interface {
 	DeleteIntegration(ctx context.Context, input *apigateway.DeleteIntegrationInput, opts ...func(*apigateway.Options)) (*apigateway.DeleteIntegrationOutput, error)
 	CreateDeployment(ctx context.Context, input *apigateway.CreateDeploymentInput, opts ...func(*apigateway.Options)) (*apigateway.CreateDeploymentOutput, error)
 	DeleteDeployment(ctx context.Context, input *apigateway.DeleteDeploymentInput, opts ...func(*apigateway.Options)) (*apigateway.DeleteDeploymentOutput, error)
+	GetDeployments(ctx context.Context, input *apigateway.GetDeploymentsInput, opts ...func(*apigateway.Options)) (*apigateway.GetDeploymentsOutput, error)
 	CreateStage(ctx context.Context, input *apigateway.CreateStageInput, opts ...func(*apigateway.Options)) (*apigateway.CreateStageOutput, error)
 	GetStages(ctx context.Context, input *apigateway.GetStagesInput, opts ...func(*apigateway.Options)) (*apigateway.GetStagesOutput, error)
 	UpdateStage(ctx context.Context, input *apigateway.UpdateStageInput, opts ...func(*apigateway.Options)) (*apigateway.UpdateStageOutput, error)
@@ -53,9 +54,18 @@ type APIGatewayV2ClientPort interface {
 	GetApi(ctx context.Context, input *apigatewayv2.GetApiInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.GetApiOutput, error)
 	GetRoutes(ctx context.Context, input *apigatewayv2.GetRoutesInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.GetRoutesOutput, error)
 	CreateRoute(ctx context.Context, input *apigatewayv2.CreateRouteInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.CreateRouteOutput, error)
+	UpdateRoute(ctx context.Context, input *apigatewayv2.UpdateRouteInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateRouteOutput, error)
 	DeleteRoute(ctx context.Context, input *apigatewayv2.DeleteRouteInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteRouteOutput, error)
 	GetIntegrations(ctx context.Context, input *apigatewayv2.GetIntegrationsInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.GetIntegrationsOutput, error)
 	CreateIntegration(ctx context.Context, input *apigatewayv2.CreateIntegrationInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.CreateIntegrationOutput, error)
+	UpdateIntegration(ctx context.Context, input *apigatewayv2.UpdateIntegrationInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateIntegrationOutput, error)
+	DeleteIntegration(ctx context.Context, input *apigatewayv2.DeleteIntegrationInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteIntegrationOutput, error)
+	// Stages
+	GetStages(ctx context.Context, input *apigatewayv2.GetStagesInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStagesOutput, error)
+	GetStage(ctx context.Context, input *apigatewayv2.GetStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStageOutput, error)
+	CreateStage(ctx context.Context, input *apigatewayv2.CreateStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.CreateStageOutput, error)
+	UpdateStage(ctx context.Context, input *apigatewayv2.UpdateStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateStageOutput, error)
+	DeleteStage(ctx context.Context, input *apigatewayv2.DeleteStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteStageOutput, error)
 }
 
 // DynamoDBClientPort defines the interface for the AWS DynamoDB client

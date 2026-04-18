@@ -21,6 +21,67 @@ func (h *ProxyHandler) handleAPIGateway(c *gin.Context) {
 	ctx := context.Background()
 
 	switch {
+	// HTTP API v2 operations (must be before REST API operations)
+	case strings.Contains(xAmzTarget, "GetApis"):
+		h.getApis(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "CreateApi"):
+		h.createApi(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "DeleteApi"):
+		h.deleteApi(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "GetApi"):
+		h.getApi(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "GetRoutes"):
+		h.getRoutes(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "CreateRoute"):
+		h.createRoute(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "UpdateRoute"):
+		h.updateRoute(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "DeleteRoute"):
+		h.deleteRoute(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "GetIntegrations"):
+		h.getIntegrationsV2(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "CreateIntegration"): // HTTP API v2 - must be after CreateRoute
+		h.createIntegrationV2(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "UpdateIntegration"):
+		h.updateIntegrationV2(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "DeleteIntegration"): // HTTP API v2
+		h.deleteIntegrationV2(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "GetStages"):
+		if strings.HasPrefix(xAmzTarget, "ApiGatewayV2.") {
+			h.getStagesV2(ctx, c, bodyBytes)
+		} else if strings.HasPrefix(xAmzTarget, "APIGateway.") {
+			h.getStages(ctx, c, bodyBytes)
+		} else {
+			h.getStagesV2(ctx, c, bodyBytes)
+		}
+	case strings.Contains(xAmzTarget, "GetStage"):
+		h.getStageV2(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "CreateStage"):
+		if strings.HasPrefix(xAmzTarget, "ApiGatewayV2.") {
+			h.createStageV2(ctx, c, bodyBytes)
+		} else if strings.HasPrefix(xAmzTarget, "APIGateway.") {
+			h.createStage(ctx, c, bodyBytes)
+		} else {
+			h.createStageV2(ctx, c, bodyBytes)
+		}
+	case strings.Contains(xAmzTarget, "UpdateStage"):
+		if strings.HasPrefix(xAmzTarget, "ApiGatewayV2.") {
+			h.updateStageV2(ctx, c, bodyBytes)
+		} else if strings.HasPrefix(xAmzTarget, "APIGateway.") {
+			h.updateStage(ctx, c, bodyBytes)
+		} else {
+			h.updateStageV2(ctx, c, bodyBytes)
+		}
+	case strings.Contains(xAmzTarget, "DeleteStage"):
+		if strings.HasPrefix(xAmzTarget, "ApiGatewayV2.") {
+			h.deleteStageV2(ctx, c, bodyBytes)
+		} else if strings.HasPrefix(xAmzTarget, "APIGateway.") {
+			h.deleteStage(ctx, c, bodyBytes)
+		} else {
+			h.deleteStageV2(ctx, c, bodyBytes)
+		}
+
+	// REST API v1 operations
 	case strings.Contains(xAmzTarget, "GetRestApis"):
 		h.getRestApis(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "CreateRestApi"):
@@ -47,12 +108,14 @@ func (h *ProxyHandler) handleAPIGateway(c *gin.Context) {
 		h.deleteMethod(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "PutIntegration"):
 		h.putIntegration(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "DeleteIntegration"):
-		h.deleteIntegration(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "GetIntegration"): // REST API v1 handler
+		h.getIntegration(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "CreateDeployment"):
 		h.createDeployment(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "DeleteDeployment"):
 		h.deleteDeployment(ctx, c, bodyBytes)
+	case strings.Contains(xAmzTarget, "GetDeployments"):
+		h.getDeployments(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "CreateStage"):
 		h.createStage(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "GetStages"):
@@ -61,26 +124,6 @@ func (h *ProxyHandler) handleAPIGateway(c *gin.Context) {
 		h.updateStage(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "DeleteStage"):
 		h.deleteStage(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "GetApis"):
-		h.getApis(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "CreateApi"):
-		h.createApi(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "DeleteApi"):
-		h.deleteApi(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "GetApi"):
-		h.getApi(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "GetRoutes"):
-		h.getRoutes(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "CreateRoute"):
-		h.createRoute(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "DeleteRoute"):
-		h.deleteRoute(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "CreateIntegration"): // Note: Must come AFTER CreateRoute
-		h.createIntegrationV2(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "GetIntegrations"): // Note: Must come BEFORE GetIntegration
-		h.getIntegrationsV2(ctx, c, bodyBytes)
-	case strings.Contains(xAmzTarget, "GetIntegration"): // REST API v1 handler
-		h.getIntegration(ctx, c, bodyBytes)
 	case strings.Contains(xAmzTarget, "ImportRestApi"):
 		h.importRestApi(ctx, c, bodyBytes)
 	default:
@@ -455,9 +498,25 @@ func (h *ProxyHandler) deleteDeployment(ctx context.Context, c *gin.Context, bod
 		sendError(c, http.StatusBadRequest, "Invalid request body", err)
 		return
 	}
+	log.Printf("DeleteDeployment: RestApiId=%s, DeploymentId=%s", aws.ToString(input.RestApiId), aws.ToString(input.DeploymentId))
 	result, err := h.svc.APIGateway().DeleteDeployment(ctx, input)
 	if err != nil {
+		log.Printf("DeleteDeployment error: %v", err)
 		sendError(c, http.StatusInternalServerError, "Failed to delete deployment", err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+func (h *ProxyHandler) getDeployments(ctx context.Context, c *gin.Context, bodyBytes []byte) {
+	input := &apigateway.GetDeploymentsInput{}
+	if err := parseBody(c, bodyBytes, input); err != nil {
+		sendError(c, http.StatusBadRequest, "Invalid request body", err)
+		return
+	}
+	result, err := h.svc.APIGateway().GetDeployments(ctx, input)
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to get deployments", err)
 		return
 	}
 	c.JSON(http.StatusOK, result)
@@ -618,6 +677,20 @@ func (h *ProxyHandler) deleteRoute(ctx context.Context, c *gin.Context, bodyByte
 	c.JSON(http.StatusOK, result)
 }
 
+func (h *ProxyHandler) updateRoute(ctx context.Context, c *gin.Context, bodyBytes []byte) {
+	input := &apigatewayv2.UpdateRouteInput{}
+	if err := parseBody(c, bodyBytes, input); err != nil {
+		sendError(c, http.StatusBadRequest, "Invalid request body", err)
+		return
+	}
+	result, err := h.svc.APIGatewayV2().UpdateRoute(ctx, input)
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to update route", err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
 func (h *ProxyHandler) getIntegrationsV2(ctx context.Context, c *gin.Context, bodyBytes []byte) {
 	input := &apigatewayv2.GetIntegrationsInput{}
 	if err := parseBody(c, bodyBytes, input); err != nil {
@@ -641,6 +714,105 @@ func (h *ProxyHandler) createIntegrationV2(ctx context.Context, c *gin.Context, 
 	result, err := h.svc.APIGatewayV2().CreateIntegration(ctx, input)
 	if err != nil {
 		sendError(c, http.StatusInternalServerError, "Failed to create integration", err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+func (h *ProxyHandler) updateIntegrationV2(ctx context.Context, c *gin.Context, bodyBytes []byte) {
+	input := &apigatewayv2.UpdateIntegrationInput{}
+	if err := parseBody(c, bodyBytes, input); err != nil {
+		sendError(c, http.StatusBadRequest, "Invalid request body", err)
+		return
+	}
+	result, err := h.svc.APIGatewayV2().UpdateIntegration(ctx, input)
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to update integration", err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+func (h *ProxyHandler) deleteIntegrationV2(ctx context.Context, c *gin.Context, bodyBytes []byte) {
+	input := &apigatewayv2.DeleteIntegrationInput{}
+	if err := parseBody(c, bodyBytes, input); err != nil {
+		sendError(c, http.StatusBadRequest, "Invalid request body", err)
+		return
+	}
+	result, err := h.svc.APIGatewayV2().DeleteIntegration(ctx, input)
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to delete integration", err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+// HTTP API v2 Stage handlers
+func (h *ProxyHandler) getStagesV2(ctx context.Context, c *gin.Context, bodyBytes []byte) {
+	input := &apigatewayv2.GetStagesInput{}
+	if err := parseBody(c, bodyBytes, input); err != nil {
+		sendError(c, http.StatusBadRequest, "Invalid request body", err)
+		return
+	}
+	result, err := h.svc.APIGatewayV2().GetStages(ctx, input)
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to get stages", err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+func (h *ProxyHandler) getStageV2(ctx context.Context, c *gin.Context, bodyBytes []byte) {
+	input := &apigatewayv2.GetStageInput{}
+	if err := parseBody(c, bodyBytes, input); err != nil {
+		sendError(c, http.StatusBadRequest, "Invalid request body", err)
+		return
+	}
+	result, err := h.svc.APIGatewayV2().GetStage(ctx, input)
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to get stage", err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+func (h *ProxyHandler) createStageV2(ctx context.Context, c *gin.Context, bodyBytes []byte) {
+	input := &apigatewayv2.CreateStageInput{}
+	if err := parseBody(c, bodyBytes, input); err != nil {
+		sendError(c, http.StatusBadRequest, "Invalid request body", err)
+		return
+	}
+	result, err := h.svc.APIGatewayV2().CreateStage(ctx, input)
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to create stage", err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+func (h *ProxyHandler) updateStageV2(ctx context.Context, c *gin.Context, bodyBytes []byte) {
+	input := &apigatewayv2.UpdateStageInput{}
+	if err := parseBody(c, bodyBytes, input); err != nil {
+		sendError(c, http.StatusBadRequest, "Invalid request body", err)
+		return
+	}
+	result, err := h.svc.APIGatewayV2().UpdateStage(ctx, input)
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to update stage", err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+func (h *ProxyHandler) deleteStageV2(ctx context.Context, c *gin.Context, bodyBytes []byte) {
+	input := &apigatewayv2.DeleteStageInput{}
+	if err := parseBody(c, bodyBytes, input); err != nil {
+		sendError(c, http.StatusBadRequest, "Invalid request body", err)
+		return
+	}
+	result, err := h.svc.APIGatewayV2().DeleteStage(ctx, input)
+	if err != nil {
+		sendError(c, http.StatusInternalServerError, "Failed to delete stage", err)
 		return
 	}
 	c.JSON(http.StatusOK, result)

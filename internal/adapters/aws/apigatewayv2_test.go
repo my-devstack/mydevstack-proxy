@@ -142,3 +142,88 @@ func TestAPIGatewayV2Adapter_CreateIntegration(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, expectedOutput, output)
 }
+
+func TestAPIGatewayV2Adapter_DeleteIntegration(t *testing.T) {
+	mockClient := ag2mocks.NewAPIGatewayV2ClientPort(t)
+	ctx := context.Background()
+	input := &apigatewayv2.DeleteIntegrationInput{ApiId: aws.String("api-123"), IntegrationId: aws.String("int-123")}
+	expectedOutput := &apigatewayv2.DeleteIntegrationOutput{}
+
+	mockClient.EXPECT().DeleteIntegration(ctx, input).Return(expectedOutput, nil)
+	adapter := &APIGatewayV2Adapter{client: mockClient}
+
+	output, err := adapter.DeleteIntegration(ctx, input)
+	assert.NoError(t, err)
+	assert.Equal(t, expectedOutput, output)
+}
+
+// Stage tests
+func TestAPIGatewayV2Adapter_GetStages(t *testing.T) {
+	mockClient := ag2mocks.NewAPIGatewayV2ClientPort(t)
+	ctx := context.Background()
+	input := &apigatewayv2.GetStagesInput{ApiId: aws.String("api-123")}
+	expectedOutput := &apigatewayv2.GetStagesOutput{}
+
+	mockClient.EXPECT().GetStages(ctx, input).Return(expectedOutput, nil)
+	adapter := &APIGatewayV2Adapter{client: mockClient}
+
+	output, err := adapter.GetStages(ctx, input)
+	assert.NoError(t, err)
+	assert.Equal(t, expectedOutput, output)
+}
+
+func TestAPIGatewayV2Adapter_GetStage(t *testing.T) {
+	mockClient := ag2mocks.NewAPIGatewayV2ClientPort(t)
+	ctx := context.Background()
+	input := &apigatewayv2.GetStageInput{ApiId: aws.String("api-123"), StageName: aws.String("prod")}
+	expectedOutput := &apigatewayv2.GetStageOutput{StageName: aws.String("prod")}
+
+	mockClient.EXPECT().GetStage(ctx, input).Return(expectedOutput, nil)
+	adapter := &APIGatewayV2Adapter{client: mockClient}
+
+	output, err := adapter.GetStage(ctx, input)
+	assert.NoError(t, err)
+	assert.Equal(t, expectedOutput, output)
+}
+
+func TestAPIGatewayV2Adapter_CreateStage(t *testing.T) {
+	mockClient := ag2mocks.NewAPIGatewayV2ClientPort(t)
+	ctx := context.Background()
+	input := &apigatewayv2.CreateStageInput{ApiId: aws.String("api-123"), StageName: aws.String("prod")}
+	expectedOutput := &apigatewayv2.CreateStageOutput{StageName: aws.String("prod")}
+
+	mockClient.EXPECT().CreateStage(ctx, input).Return(expectedOutput, nil)
+	adapter := &APIGatewayV2Adapter{client: mockClient}
+
+	output, err := adapter.CreateStage(ctx, input)
+	assert.NoError(t, err)
+	assert.Equal(t, expectedOutput, output)
+}
+
+func TestAPIGatewayV2Adapter_UpdateStage(t *testing.T) {
+	mockClient := ag2mocks.NewAPIGatewayV2ClientPort(t)
+	ctx := context.Background()
+	input := &apigatewayv2.UpdateStageInput{ApiId: aws.String("api-123"), StageName: aws.String("prod")}
+	expectedOutput := &apigatewayv2.UpdateStageOutput{StageName: aws.String("prod")}
+
+	mockClient.EXPECT().UpdateStage(ctx, input).Return(expectedOutput, nil)
+	adapter := &APIGatewayV2Adapter{client: mockClient}
+
+	output, err := adapter.UpdateStage(ctx, input)
+	assert.NoError(t, err)
+	assert.Equal(t, expectedOutput, output)
+}
+
+func TestAPIGatewayV2Adapter_DeleteStage(t *testing.T) {
+	mockClient := ag2mocks.NewAPIGatewayV2ClientPort(t)
+	ctx := context.Background()
+	input := &apigatewayv2.DeleteStageInput{ApiId: aws.String("api-123"), StageName: aws.String("prod")}
+	expectedOutput := &apigatewayv2.DeleteStageOutput{}
+
+	mockClient.EXPECT().DeleteStage(ctx, input).Return(expectedOutput, nil)
+	adapter := &APIGatewayV2Adapter{client: mockClient}
+
+	output, err := adapter.DeleteStage(ctx, input)
+	assert.NoError(t, err)
+	assert.Equal(t, expectedOutput, output)
+}

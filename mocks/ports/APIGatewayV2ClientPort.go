@@ -287,6 +287,89 @@ func (_c *APIGatewayV2ClientPort_CreateRoute_Call) RunAndReturn(run func(ctx con
 	return _c
 }
 
+// CreateStage provides a mock function for the type APIGatewayV2ClientPort
+func (_mock *APIGatewayV2ClientPort) CreateStage(ctx context.Context, input *apigatewayv2.CreateStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.CreateStageOutput, error) {
+	var tmpRet mock.Arguments
+	if len(opts) > 0 {
+		tmpRet = _mock.Called(ctx, input, opts)
+	} else {
+		tmpRet = _mock.Called(ctx, input)
+	}
+	ret := tmpRet
+
+	if len(ret) == 0 {
+		panic("no return value specified for CreateStage")
+	}
+
+	var r0 *apigatewayv2.CreateStageOutput
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.CreateStageInput, ...func(*apigatewayv2.Options)) (*apigatewayv2.CreateStageOutput, error)); ok {
+		return returnFunc(ctx, input, opts...)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.CreateStageInput, ...func(*apigatewayv2.Options)) *apigatewayv2.CreateStageOutput); ok {
+		r0 = returnFunc(ctx, input, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*apigatewayv2.CreateStageOutput)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, *apigatewayv2.CreateStageInput, ...func(*apigatewayv2.Options)) error); ok {
+		r1 = returnFunc(ctx, input, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// APIGatewayV2ClientPort_CreateStage_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateStage'
+type APIGatewayV2ClientPort_CreateStage_Call struct {
+	*mock.Call
+}
+
+// CreateStage is a helper method to define mock.On call
+//   - ctx context.Context
+//   - input *apigatewayv2.CreateStageInput
+//   - opts ...func(*apigatewayv2.Options)
+func (_e *APIGatewayV2ClientPort_Expecter) CreateStage(ctx interface{}, input interface{}, opts ...interface{}) *APIGatewayV2ClientPort_CreateStage_Call {
+	return &APIGatewayV2ClientPort_CreateStage_Call{Call: _e.mock.On("CreateStage",
+		append([]interface{}{ctx, input}, opts...)...)}
+}
+
+func (_c *APIGatewayV2ClientPort_CreateStage_Call) Run(run func(ctx context.Context, input *apigatewayv2.CreateStageInput, opts ...func(*apigatewayv2.Options))) *APIGatewayV2ClientPort_CreateStage_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 *apigatewayv2.CreateStageInput
+		if args[1] != nil {
+			arg1 = args[1].(*apigatewayv2.CreateStageInput)
+		}
+		var arg2 []func(*apigatewayv2.Options)
+		var variadicArgs []func(*apigatewayv2.Options)
+		if len(args) > 2 {
+			variadicArgs = args[2].([]func(*apigatewayv2.Options))
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_CreateStage_Call) Return(createStageOutput *apigatewayv2.CreateStageOutput, err error) *APIGatewayV2ClientPort_CreateStage_Call {
+	_c.Call.Return(createStageOutput, err)
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_CreateStage_Call) RunAndReturn(run func(ctx context.Context, input *apigatewayv2.CreateStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.CreateStageOutput, error)) *APIGatewayV2ClientPort_CreateStage_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // DeleteApi provides a mock function for the type APIGatewayV2ClientPort
 func (_mock *APIGatewayV2ClientPort) DeleteApi(ctx context.Context, input *apigatewayv2.DeleteApiInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteApiOutput, error) {
 	var tmpRet mock.Arguments
@@ -370,6 +453,89 @@ func (_c *APIGatewayV2ClientPort_DeleteApi_Call) RunAndReturn(run func(ctx conte
 	return _c
 }
 
+// DeleteIntegration provides a mock function for the type APIGatewayV2ClientPort
+func (_mock *APIGatewayV2ClientPort) DeleteIntegration(ctx context.Context, input *apigatewayv2.DeleteIntegrationInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteIntegrationOutput, error) {
+	var tmpRet mock.Arguments
+	if len(opts) > 0 {
+		tmpRet = _mock.Called(ctx, input, opts)
+	} else {
+		tmpRet = _mock.Called(ctx, input)
+	}
+	ret := tmpRet
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteIntegration")
+	}
+
+	var r0 *apigatewayv2.DeleteIntegrationOutput
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.DeleteIntegrationInput, ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteIntegrationOutput, error)); ok {
+		return returnFunc(ctx, input, opts...)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.DeleteIntegrationInput, ...func(*apigatewayv2.Options)) *apigatewayv2.DeleteIntegrationOutput); ok {
+		r0 = returnFunc(ctx, input, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*apigatewayv2.DeleteIntegrationOutput)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, *apigatewayv2.DeleteIntegrationInput, ...func(*apigatewayv2.Options)) error); ok {
+		r1 = returnFunc(ctx, input, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// APIGatewayV2ClientPort_DeleteIntegration_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteIntegration'
+type APIGatewayV2ClientPort_DeleteIntegration_Call struct {
+	*mock.Call
+}
+
+// DeleteIntegration is a helper method to define mock.On call
+//   - ctx context.Context
+//   - input *apigatewayv2.DeleteIntegrationInput
+//   - opts ...func(*apigatewayv2.Options)
+func (_e *APIGatewayV2ClientPort_Expecter) DeleteIntegration(ctx interface{}, input interface{}, opts ...interface{}) *APIGatewayV2ClientPort_DeleteIntegration_Call {
+	return &APIGatewayV2ClientPort_DeleteIntegration_Call{Call: _e.mock.On("DeleteIntegration",
+		append([]interface{}{ctx, input}, opts...)...)}
+}
+
+func (_c *APIGatewayV2ClientPort_DeleteIntegration_Call) Run(run func(ctx context.Context, input *apigatewayv2.DeleteIntegrationInput, opts ...func(*apigatewayv2.Options))) *APIGatewayV2ClientPort_DeleteIntegration_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 *apigatewayv2.DeleteIntegrationInput
+		if args[1] != nil {
+			arg1 = args[1].(*apigatewayv2.DeleteIntegrationInput)
+		}
+		var arg2 []func(*apigatewayv2.Options)
+		var variadicArgs []func(*apigatewayv2.Options)
+		if len(args) > 2 {
+			variadicArgs = args[2].([]func(*apigatewayv2.Options))
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_DeleteIntegration_Call) Return(deleteIntegrationOutput *apigatewayv2.DeleteIntegrationOutput, err error) *APIGatewayV2ClientPort_DeleteIntegration_Call {
+	_c.Call.Return(deleteIntegrationOutput, err)
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_DeleteIntegration_Call) RunAndReturn(run func(ctx context.Context, input *apigatewayv2.DeleteIntegrationInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteIntegrationOutput, error)) *APIGatewayV2ClientPort_DeleteIntegration_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // DeleteRoute provides a mock function for the type APIGatewayV2ClientPort
 func (_mock *APIGatewayV2ClientPort) DeleteRoute(ctx context.Context, input *apigatewayv2.DeleteRouteInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteRouteOutput, error) {
 	var tmpRet mock.Arguments
@@ -449,6 +615,89 @@ func (_c *APIGatewayV2ClientPort_DeleteRoute_Call) Return(deleteRouteOutput *api
 }
 
 func (_c *APIGatewayV2ClientPort_DeleteRoute_Call) RunAndReturn(run func(ctx context.Context, input *apigatewayv2.DeleteRouteInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteRouteOutput, error)) *APIGatewayV2ClientPort_DeleteRoute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteStage provides a mock function for the type APIGatewayV2ClientPort
+func (_mock *APIGatewayV2ClientPort) DeleteStage(ctx context.Context, input *apigatewayv2.DeleteStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteStageOutput, error) {
+	var tmpRet mock.Arguments
+	if len(opts) > 0 {
+		tmpRet = _mock.Called(ctx, input, opts)
+	} else {
+		tmpRet = _mock.Called(ctx, input)
+	}
+	ret := tmpRet
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteStage")
+	}
+
+	var r0 *apigatewayv2.DeleteStageOutput
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.DeleteStageInput, ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteStageOutput, error)); ok {
+		return returnFunc(ctx, input, opts...)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.DeleteStageInput, ...func(*apigatewayv2.Options)) *apigatewayv2.DeleteStageOutput); ok {
+		r0 = returnFunc(ctx, input, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*apigatewayv2.DeleteStageOutput)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, *apigatewayv2.DeleteStageInput, ...func(*apigatewayv2.Options)) error); ok {
+		r1 = returnFunc(ctx, input, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// APIGatewayV2ClientPort_DeleteStage_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteStage'
+type APIGatewayV2ClientPort_DeleteStage_Call struct {
+	*mock.Call
+}
+
+// DeleteStage is a helper method to define mock.On call
+//   - ctx context.Context
+//   - input *apigatewayv2.DeleteStageInput
+//   - opts ...func(*apigatewayv2.Options)
+func (_e *APIGatewayV2ClientPort_Expecter) DeleteStage(ctx interface{}, input interface{}, opts ...interface{}) *APIGatewayV2ClientPort_DeleteStage_Call {
+	return &APIGatewayV2ClientPort_DeleteStage_Call{Call: _e.mock.On("DeleteStage",
+		append([]interface{}{ctx, input}, opts...)...)}
+}
+
+func (_c *APIGatewayV2ClientPort_DeleteStage_Call) Run(run func(ctx context.Context, input *apigatewayv2.DeleteStageInput, opts ...func(*apigatewayv2.Options))) *APIGatewayV2ClientPort_DeleteStage_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 *apigatewayv2.DeleteStageInput
+		if args[1] != nil {
+			arg1 = args[1].(*apigatewayv2.DeleteStageInput)
+		}
+		var arg2 []func(*apigatewayv2.Options)
+		var variadicArgs []func(*apigatewayv2.Options)
+		if len(args) > 2 {
+			variadicArgs = args[2].([]func(*apigatewayv2.Options))
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_DeleteStage_Call) Return(deleteStageOutput *apigatewayv2.DeleteStageOutput, err error) *APIGatewayV2ClientPort_DeleteStage_Call {
+	_c.Call.Return(deleteStageOutput, err)
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_DeleteStage_Call) RunAndReturn(run func(ctx context.Context, input *apigatewayv2.DeleteStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.DeleteStageOutput, error)) *APIGatewayV2ClientPort_DeleteStage_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -781,6 +1030,421 @@ func (_c *APIGatewayV2ClientPort_GetRoutes_Call) Return(getRoutesOutput *apigate
 }
 
 func (_c *APIGatewayV2ClientPort_GetRoutes_Call) RunAndReturn(run func(ctx context.Context, input *apigatewayv2.GetRoutesInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.GetRoutesOutput, error)) *APIGatewayV2ClientPort_GetRoutes_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetStage provides a mock function for the type APIGatewayV2ClientPort
+func (_mock *APIGatewayV2ClientPort) GetStage(ctx context.Context, input *apigatewayv2.GetStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStageOutput, error) {
+	var tmpRet mock.Arguments
+	if len(opts) > 0 {
+		tmpRet = _mock.Called(ctx, input, opts)
+	} else {
+		tmpRet = _mock.Called(ctx, input)
+	}
+	ret := tmpRet
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetStage")
+	}
+
+	var r0 *apigatewayv2.GetStageOutput
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.GetStageInput, ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStageOutput, error)); ok {
+		return returnFunc(ctx, input, opts...)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.GetStageInput, ...func(*apigatewayv2.Options)) *apigatewayv2.GetStageOutput); ok {
+		r0 = returnFunc(ctx, input, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*apigatewayv2.GetStageOutput)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, *apigatewayv2.GetStageInput, ...func(*apigatewayv2.Options)) error); ok {
+		r1 = returnFunc(ctx, input, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// APIGatewayV2ClientPort_GetStage_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetStage'
+type APIGatewayV2ClientPort_GetStage_Call struct {
+	*mock.Call
+}
+
+// GetStage is a helper method to define mock.On call
+//   - ctx context.Context
+//   - input *apigatewayv2.GetStageInput
+//   - opts ...func(*apigatewayv2.Options)
+func (_e *APIGatewayV2ClientPort_Expecter) GetStage(ctx interface{}, input interface{}, opts ...interface{}) *APIGatewayV2ClientPort_GetStage_Call {
+	return &APIGatewayV2ClientPort_GetStage_Call{Call: _e.mock.On("GetStage",
+		append([]interface{}{ctx, input}, opts...)...)}
+}
+
+func (_c *APIGatewayV2ClientPort_GetStage_Call) Run(run func(ctx context.Context, input *apigatewayv2.GetStageInput, opts ...func(*apigatewayv2.Options))) *APIGatewayV2ClientPort_GetStage_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 *apigatewayv2.GetStageInput
+		if args[1] != nil {
+			arg1 = args[1].(*apigatewayv2.GetStageInput)
+		}
+		var arg2 []func(*apigatewayv2.Options)
+		var variadicArgs []func(*apigatewayv2.Options)
+		if len(args) > 2 {
+			variadicArgs = args[2].([]func(*apigatewayv2.Options))
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_GetStage_Call) Return(getStageOutput *apigatewayv2.GetStageOutput, err error) *APIGatewayV2ClientPort_GetStage_Call {
+	_c.Call.Return(getStageOutput, err)
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_GetStage_Call) RunAndReturn(run func(ctx context.Context, input *apigatewayv2.GetStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStageOutput, error)) *APIGatewayV2ClientPort_GetStage_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetStages provides a mock function for the type APIGatewayV2ClientPort
+func (_mock *APIGatewayV2ClientPort) GetStages(ctx context.Context, input *apigatewayv2.GetStagesInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStagesOutput, error) {
+	var tmpRet mock.Arguments
+	if len(opts) > 0 {
+		tmpRet = _mock.Called(ctx, input, opts)
+	} else {
+		tmpRet = _mock.Called(ctx, input)
+	}
+	ret := tmpRet
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetStages")
+	}
+
+	var r0 *apigatewayv2.GetStagesOutput
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.GetStagesInput, ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStagesOutput, error)); ok {
+		return returnFunc(ctx, input, opts...)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.GetStagesInput, ...func(*apigatewayv2.Options)) *apigatewayv2.GetStagesOutput); ok {
+		r0 = returnFunc(ctx, input, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*apigatewayv2.GetStagesOutput)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, *apigatewayv2.GetStagesInput, ...func(*apigatewayv2.Options)) error); ok {
+		r1 = returnFunc(ctx, input, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// APIGatewayV2ClientPort_GetStages_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetStages'
+type APIGatewayV2ClientPort_GetStages_Call struct {
+	*mock.Call
+}
+
+// GetStages is a helper method to define mock.On call
+//   - ctx context.Context
+//   - input *apigatewayv2.GetStagesInput
+//   - opts ...func(*apigatewayv2.Options)
+func (_e *APIGatewayV2ClientPort_Expecter) GetStages(ctx interface{}, input interface{}, opts ...interface{}) *APIGatewayV2ClientPort_GetStages_Call {
+	return &APIGatewayV2ClientPort_GetStages_Call{Call: _e.mock.On("GetStages",
+		append([]interface{}{ctx, input}, opts...)...)}
+}
+
+func (_c *APIGatewayV2ClientPort_GetStages_Call) Run(run func(ctx context.Context, input *apigatewayv2.GetStagesInput, opts ...func(*apigatewayv2.Options))) *APIGatewayV2ClientPort_GetStages_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 *apigatewayv2.GetStagesInput
+		if args[1] != nil {
+			arg1 = args[1].(*apigatewayv2.GetStagesInput)
+		}
+		var arg2 []func(*apigatewayv2.Options)
+		var variadicArgs []func(*apigatewayv2.Options)
+		if len(args) > 2 {
+			variadicArgs = args[2].([]func(*apigatewayv2.Options))
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_GetStages_Call) Return(getStagesOutput *apigatewayv2.GetStagesOutput, err error) *APIGatewayV2ClientPort_GetStages_Call {
+	_c.Call.Return(getStagesOutput, err)
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_GetStages_Call) RunAndReturn(run func(ctx context.Context, input *apigatewayv2.GetStagesInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStagesOutput, error)) *APIGatewayV2ClientPort_GetStages_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateIntegration provides a mock function for the type APIGatewayV2ClientPort
+func (_mock *APIGatewayV2ClientPort) UpdateIntegration(ctx context.Context, input *apigatewayv2.UpdateIntegrationInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateIntegrationOutput, error) {
+	var tmpRet mock.Arguments
+	if len(opts) > 0 {
+		tmpRet = _mock.Called(ctx, input, opts)
+	} else {
+		tmpRet = _mock.Called(ctx, input)
+	}
+	ret := tmpRet
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateIntegration")
+	}
+
+	var r0 *apigatewayv2.UpdateIntegrationOutput
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.UpdateIntegrationInput, ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateIntegrationOutput, error)); ok {
+		return returnFunc(ctx, input, opts...)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.UpdateIntegrationInput, ...func(*apigatewayv2.Options)) *apigatewayv2.UpdateIntegrationOutput); ok {
+		r0 = returnFunc(ctx, input, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*apigatewayv2.UpdateIntegrationOutput)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, *apigatewayv2.UpdateIntegrationInput, ...func(*apigatewayv2.Options)) error); ok {
+		r1 = returnFunc(ctx, input, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// APIGatewayV2ClientPort_UpdateIntegration_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateIntegration'
+type APIGatewayV2ClientPort_UpdateIntegration_Call struct {
+	*mock.Call
+}
+
+// UpdateIntegration is a helper method to define mock.On call
+//   - ctx context.Context
+//   - input *apigatewayv2.UpdateIntegrationInput
+//   - opts ...func(*apigatewayv2.Options)
+func (_e *APIGatewayV2ClientPort_Expecter) UpdateIntegration(ctx interface{}, input interface{}, opts ...interface{}) *APIGatewayV2ClientPort_UpdateIntegration_Call {
+	return &APIGatewayV2ClientPort_UpdateIntegration_Call{Call: _e.mock.On("UpdateIntegration",
+		append([]interface{}{ctx, input}, opts...)...)}
+}
+
+func (_c *APIGatewayV2ClientPort_UpdateIntegration_Call) Run(run func(ctx context.Context, input *apigatewayv2.UpdateIntegrationInput, opts ...func(*apigatewayv2.Options))) *APIGatewayV2ClientPort_UpdateIntegration_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 *apigatewayv2.UpdateIntegrationInput
+		if args[1] != nil {
+			arg1 = args[1].(*apigatewayv2.UpdateIntegrationInput)
+		}
+		var arg2 []func(*apigatewayv2.Options)
+		var variadicArgs []func(*apigatewayv2.Options)
+		if len(args) > 2 {
+			variadicArgs = args[2].([]func(*apigatewayv2.Options))
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_UpdateIntegration_Call) Return(updateIntegrationOutput *apigatewayv2.UpdateIntegrationOutput, err error) *APIGatewayV2ClientPort_UpdateIntegration_Call {
+	_c.Call.Return(updateIntegrationOutput, err)
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_UpdateIntegration_Call) RunAndReturn(run func(ctx context.Context, input *apigatewayv2.UpdateIntegrationInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateIntegrationOutput, error)) *APIGatewayV2ClientPort_UpdateIntegration_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateRoute provides a mock function for the type APIGatewayV2ClientPort
+func (_mock *APIGatewayV2ClientPort) UpdateRoute(ctx context.Context, input *apigatewayv2.UpdateRouteInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateRouteOutput, error) {
+	var tmpRet mock.Arguments
+	if len(opts) > 0 {
+		tmpRet = _mock.Called(ctx, input, opts)
+	} else {
+		tmpRet = _mock.Called(ctx, input)
+	}
+	ret := tmpRet
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateRoute")
+	}
+
+	var r0 *apigatewayv2.UpdateRouteOutput
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.UpdateRouteInput, ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateRouteOutput, error)); ok {
+		return returnFunc(ctx, input, opts...)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.UpdateRouteInput, ...func(*apigatewayv2.Options)) *apigatewayv2.UpdateRouteOutput); ok {
+		r0 = returnFunc(ctx, input, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*apigatewayv2.UpdateRouteOutput)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, *apigatewayv2.UpdateRouteInput, ...func(*apigatewayv2.Options)) error); ok {
+		r1 = returnFunc(ctx, input, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// APIGatewayV2ClientPort_UpdateRoute_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateRoute'
+type APIGatewayV2ClientPort_UpdateRoute_Call struct {
+	*mock.Call
+}
+
+// UpdateRoute is a helper method to define mock.On call
+//   - ctx context.Context
+//   - input *apigatewayv2.UpdateRouteInput
+//   - opts ...func(*apigatewayv2.Options)
+func (_e *APIGatewayV2ClientPort_Expecter) UpdateRoute(ctx interface{}, input interface{}, opts ...interface{}) *APIGatewayV2ClientPort_UpdateRoute_Call {
+	return &APIGatewayV2ClientPort_UpdateRoute_Call{Call: _e.mock.On("UpdateRoute",
+		append([]interface{}{ctx, input}, opts...)...)}
+}
+
+func (_c *APIGatewayV2ClientPort_UpdateRoute_Call) Run(run func(ctx context.Context, input *apigatewayv2.UpdateRouteInput, opts ...func(*apigatewayv2.Options))) *APIGatewayV2ClientPort_UpdateRoute_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 *apigatewayv2.UpdateRouteInput
+		if args[1] != nil {
+			arg1 = args[1].(*apigatewayv2.UpdateRouteInput)
+		}
+		var arg2 []func(*apigatewayv2.Options)
+		var variadicArgs []func(*apigatewayv2.Options)
+		if len(args) > 2 {
+			variadicArgs = args[2].([]func(*apigatewayv2.Options))
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_UpdateRoute_Call) Return(updateRouteOutput *apigatewayv2.UpdateRouteOutput, err error) *APIGatewayV2ClientPort_UpdateRoute_Call {
+	_c.Call.Return(updateRouteOutput, err)
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_UpdateRoute_Call) RunAndReturn(run func(ctx context.Context, input *apigatewayv2.UpdateRouteInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateRouteOutput, error)) *APIGatewayV2ClientPort_UpdateRoute_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateStage provides a mock function for the type APIGatewayV2ClientPort
+func (_mock *APIGatewayV2ClientPort) UpdateStage(ctx context.Context, input *apigatewayv2.UpdateStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateStageOutput, error) {
+	var tmpRet mock.Arguments
+	if len(opts) > 0 {
+		tmpRet = _mock.Called(ctx, input, opts)
+	} else {
+		tmpRet = _mock.Called(ctx, input)
+	}
+	ret := tmpRet
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateStage")
+	}
+
+	var r0 *apigatewayv2.UpdateStageOutput
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.UpdateStageInput, ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateStageOutput, error)); ok {
+		return returnFunc(ctx, input, opts...)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigatewayv2.UpdateStageInput, ...func(*apigatewayv2.Options)) *apigatewayv2.UpdateStageOutput); ok {
+		r0 = returnFunc(ctx, input, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*apigatewayv2.UpdateStageOutput)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, *apigatewayv2.UpdateStageInput, ...func(*apigatewayv2.Options)) error); ok {
+		r1 = returnFunc(ctx, input, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// APIGatewayV2ClientPort_UpdateStage_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateStage'
+type APIGatewayV2ClientPort_UpdateStage_Call struct {
+	*mock.Call
+}
+
+// UpdateStage is a helper method to define mock.On call
+//   - ctx context.Context
+//   - input *apigatewayv2.UpdateStageInput
+//   - opts ...func(*apigatewayv2.Options)
+func (_e *APIGatewayV2ClientPort_Expecter) UpdateStage(ctx interface{}, input interface{}, opts ...interface{}) *APIGatewayV2ClientPort_UpdateStage_Call {
+	return &APIGatewayV2ClientPort_UpdateStage_Call{Call: _e.mock.On("UpdateStage",
+		append([]interface{}{ctx, input}, opts...)...)}
+}
+
+func (_c *APIGatewayV2ClientPort_UpdateStage_Call) Run(run func(ctx context.Context, input *apigatewayv2.UpdateStageInput, opts ...func(*apigatewayv2.Options))) *APIGatewayV2ClientPort_UpdateStage_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 *apigatewayv2.UpdateStageInput
+		if args[1] != nil {
+			arg1 = args[1].(*apigatewayv2.UpdateStageInput)
+		}
+		var arg2 []func(*apigatewayv2.Options)
+		var variadicArgs []func(*apigatewayv2.Options)
+		if len(args) > 2 {
+			variadicArgs = args[2].([]func(*apigatewayv2.Options))
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_UpdateStage_Call) Return(updateStageOutput *apigatewayv2.UpdateStageOutput, err error) *APIGatewayV2ClientPort_UpdateStage_Call {
+	_c.Call.Return(updateStageOutput, err)
+	return _c
+}
+
+func (_c *APIGatewayV2ClientPort_UpdateStage_Call) RunAndReturn(run func(ctx context.Context, input *apigatewayv2.UpdateStageInput, opts ...func(*apigatewayv2.Options)) (*apigatewayv2.UpdateStageOutput, error)) *APIGatewayV2ClientPort_UpdateStage_Call {
 	_c.Call.Return(run)
 	return _c
 }

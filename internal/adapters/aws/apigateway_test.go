@@ -398,6 +398,26 @@ func TestAPIGatewayAdapter_DeleteDeployment(t *testing.T) {
 	assert.Equal(t, expectedOutput, output)
 }
 
+func TestAPIGatewayAdapter_GetDeployments(t *testing.T) {
+	mockClient := apimocks.NewAPIGatewayClientPort(t)
+	ctx := context.Background()
+	input := &apigateway.GetDeploymentsInput{RestApiId: aws.String("api-123")}
+
+	expectedOutput := &apigateway.GetDeploymentsOutput{
+		Items: []types.Deployment{
+			{Id: aws.String("deployment-123"), Description: aws.String("Initial deployment")},
+		},
+	}
+
+	mockClient.EXPECT().GetDeployments(ctx, input).Return(expectedOutput, nil)
+
+	adapter := &APIGatewayAdapter{client: mockClient}
+	output, err := adapter.GetDeployments(ctx, input)
+
+	assert.NoError(t, err)
+	assert.Equal(t, expectedOutput, output)
+}
+
 func TestAPIGatewayAdapter_CreateStage(t *testing.T) {
 	mockClient := apimocks.NewAPIGatewayClientPort(t)
 	ctx := context.Background()

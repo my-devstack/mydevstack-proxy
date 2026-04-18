@@ -868,6 +868,89 @@ func (_c *APIGatewayClientPort_DeleteStage_Call) RunAndReturn(run func(ctx conte
 	return _c
 }
 
+// GetDeployments provides a mock function for the type APIGatewayClientPort
+func (_mock *APIGatewayClientPort) GetDeployments(ctx context.Context, input *apigateway.GetDeploymentsInput, opts ...func(*apigateway.Options)) (*apigateway.GetDeploymentsOutput, error) {
+	var tmpRet mock.Arguments
+	if len(opts) > 0 {
+		tmpRet = _mock.Called(ctx, input, opts)
+	} else {
+		tmpRet = _mock.Called(ctx, input)
+	}
+	ret := tmpRet
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetDeployments")
+	}
+
+	var r0 *apigateway.GetDeploymentsOutput
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigateway.GetDeploymentsInput, ...func(*apigateway.Options)) (*apigateway.GetDeploymentsOutput, error)); ok {
+		return returnFunc(ctx, input, opts...)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *apigateway.GetDeploymentsInput, ...func(*apigateway.Options)) *apigateway.GetDeploymentsOutput); ok {
+		r0 = returnFunc(ctx, input, opts...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*apigateway.GetDeploymentsOutput)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, *apigateway.GetDeploymentsInput, ...func(*apigateway.Options)) error); ok {
+		r1 = returnFunc(ctx, input, opts...)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// APIGatewayClientPort_GetDeployments_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetDeployments'
+type APIGatewayClientPort_GetDeployments_Call struct {
+	*mock.Call
+}
+
+// GetDeployments is a helper method to define mock.On call
+//   - ctx context.Context
+//   - input *apigateway.GetDeploymentsInput
+//   - opts ...func(*apigateway.Options)
+func (_e *APIGatewayClientPort_Expecter) GetDeployments(ctx interface{}, input interface{}, opts ...interface{}) *APIGatewayClientPort_GetDeployments_Call {
+	return &APIGatewayClientPort_GetDeployments_Call{Call: _e.mock.On("GetDeployments",
+		append([]interface{}{ctx, input}, opts...)...)}
+}
+
+func (_c *APIGatewayClientPort_GetDeployments_Call) Run(run func(ctx context.Context, input *apigateway.GetDeploymentsInput, opts ...func(*apigateway.Options))) *APIGatewayClientPort_GetDeployments_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 *apigateway.GetDeploymentsInput
+		if args[1] != nil {
+			arg1 = args[1].(*apigateway.GetDeploymentsInput)
+		}
+		var arg2 []func(*apigateway.Options)
+		var variadicArgs []func(*apigateway.Options)
+		if len(args) > 2 {
+			variadicArgs = args[2].([]func(*apigateway.Options))
+		}
+		arg2 = variadicArgs
+		run(
+			arg0,
+			arg1,
+			arg2...,
+		)
+	})
+	return _c
+}
+
+func (_c *APIGatewayClientPort_GetDeployments_Call) Return(getDeploymentsOutput *apigateway.GetDeploymentsOutput, err error) *APIGatewayClientPort_GetDeployments_Call {
+	_c.Call.Return(getDeploymentsOutput, err)
+	return _c
+}
+
+func (_c *APIGatewayClientPort_GetDeployments_Call) RunAndReturn(run func(ctx context.Context, input *apigateway.GetDeploymentsInput, opts ...func(*apigateway.Options)) (*apigateway.GetDeploymentsOutput, error)) *APIGatewayClientPort_GetDeployments_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetIntegration provides a mock function for the type APIGatewayClientPort
 func (_mock *APIGatewayClientPort) GetIntegration(ctx context.Context, input *apigateway.GetIntegrationInput, opts ...func(*apigateway.Options)) (*apigateway.GetIntegrationOutput, error) {
 	var tmpRet mock.Arguments
