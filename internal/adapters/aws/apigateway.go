@@ -98,6 +98,10 @@ func (a *APIGatewayAdapter) DeleteDeployment(ctx context.Context, input *apigate
 	return a.client.DeleteDeployment(ctx, input)
 }
 
+func (a *APIGatewayAdapter) GetDeployments(ctx context.Context, input *apigateway.GetDeploymentsInput) (*apigateway.GetDeploymentsOutput, error) {
+	return a.client.GetDeployments(ctx, input)
+}
+
 func (a *APIGatewayAdapter) CreateStage(ctx context.Context, input *apigateway.CreateStageInput) (*apigateway.CreateStageOutput, error) {
 	return a.client.CreateStage(ctx, input)
 }

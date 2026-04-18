@@ -43,13 +43,13 @@ jobs:
         run: go mod download
 
       - name: Run unit tests
-        run: go test -v -race -coverprofile=coverage.out ./...
+        run: make unit-coverage
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: coverage.out
+          path: unit.html
           retention-days: 7
 
   # Build binaries for release (only on tags/releases)

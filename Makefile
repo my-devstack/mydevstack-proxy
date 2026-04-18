@@ -22,6 +22,7 @@ mockery:
 unit:
 	go mod tidy
 	go test $(shell go list ./internal/... | grep -v /mocks) -race -coverprofile .testCoverage.txt -v 2>&1
+
 .PHONY: unit-coverage
 unit-coverage: unit ## Runs unit tests and generates a html coverage report
 	go tool cover -html=.testCoverage.txt -o unit.html
